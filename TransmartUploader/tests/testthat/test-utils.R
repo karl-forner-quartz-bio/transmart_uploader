@@ -1,4 +1,5 @@
-context('run_tm_etl')
+context('utils')
+
 
 
 .find_extdata_file <- function() {
@@ -21,12 +22,6 @@ test_that('find_extdata_file', .find_extdata_file())
 test_that('check_jar', .check_jar())
 
 
-
-.run_tm_etl <- function() {
-
-}
-
-test_that('run_tm_etl', .run_tm_etl())
 
 
 

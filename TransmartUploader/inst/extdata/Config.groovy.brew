@@ -2,10 +2,10 @@
 // replace DB parameters and dataDir with the actual values
 
 // CONFIGURE THIS !!!
-dataDir = <% data_dir %>
+dataDir = '<%=data_dir%>'
 
-db.hostname = <% host %>
-db.port = <% port %>
+db.hostname = '<%=host%>'
+db.port = <%=port%>
 db.sid = 'xe'
 db.username = 'tm_cz'
 db.password = 'tm_cz'
