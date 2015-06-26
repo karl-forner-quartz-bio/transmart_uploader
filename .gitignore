@@ -4,5 +4,6 @@
 *.Rcheck
 *.pdf
 *.Rd
+NAMESPACE
 ETL_TEST
 
