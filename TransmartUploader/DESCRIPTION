@@ -10,7 +10,8 @@ Depends:
 License: GPL-3
 LazyData: true
 Imports:
-    brew
+    brew,
+    car
 Suggests:
     devtools,
     testthat
