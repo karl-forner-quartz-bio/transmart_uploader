@@ -3,5 +3,6 @@
 *.gz
 *.Rcheck
 *.pdf
+*.Rd
 ETL_TEST
 
