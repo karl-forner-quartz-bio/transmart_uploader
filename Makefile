@@ -1,6 +1,6 @@
 R=R
 RSCRIPT=Rscript
-
+PKG=TransmartUploader
 
 check:
 	[ -e .check ] || mkdir .check
@@ -9,9 +9,15 @@ check:
 
 	
 tests: 
-	 $(RSCRIPT) -e 'library(methods);devtools::test("TransmartUploader")'
+	 $(RSCRIPT) -e 'library(methods);devtools::test("$(PKG)")'
 	 
 	 
-doc:
+roxygen:
+	 $(RSCRIPT) -e 'library(methods);devtools::document("$(PKG)")'
+
+check-doc: roxygen
+	$(RSCRIPT) -e 'devtools::document("$(PKG)");devtools::check_doc("$(PKG)")'
+	 
+doc: roxygen
 	rm -f Rd2.pdf TransmartUploader.pdf
 	R CMD Rd2pdf -o TransmartUploader.pdf TransmartUploader
