@@ -32,7 +32,10 @@ run_tm_etl <- function(
 ) {
   check_jar(java, jar)
 
+  if (inherits(data_dfs, 'data.frame')) data_dfs <- list(data_dfs)
+
   # get study_id
+
   study_id <- unique(data_dfs[[1]]$STUDY_ID)
   if (is.null(study_id) || !nzchar(study_id)) {
     stop('STUDY_ID is MANDATORY')
@@ -100,6 +103,8 @@ delete_study_by_id <- function(
   jar = find_extdata_file('tm_etl.jar'),
   config = find_extdata_file('Config.groovy.brew')
 ) {
+
+  id <- toupper(id)
 
   dir <- tempfile()
   dir.create(dir)
