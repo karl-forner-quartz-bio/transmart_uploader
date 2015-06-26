@@ -1,26 +1,24 @@
 
-#' Generat data.fram to make the mapping file to upload the data to tranSMART 
-#' This is the default map and shoulddited based on our tranSMARt tree structure
+#' Generate the default mapping of variables to the TranSMART tree
 #'
-
-
-#' @return map_data   two cols data.frame indicating two fixed col name: "category_cd", "data_label"
+#' this mapping is mandatory to upload the data into tranSMART
+#' This is the default map and should be edited based on our tranSMARt tree structure
+#'
+#' @return map_data   data.frame with columns "category_cd" and "data_label"
 #'
 #' @author Sepideh
+#' @export
+default_mapping <- function() {
+
+  col_path <- " / /Tissue/Subject+Demographic/Subject+Phenotype"
+  col_name <- "STUDY_ID/SUBJ_ID/Tissue_Type/Sex/Phenotype"
+
+  col_path <- unlist(strsplit(col_path, "/"))
+  col_name <- unlist(strsplit(col_name, "/"))
+
+  map_data <- data.frame(col_path, col_name, stringsAsFactors = FALSE)
+  names(map_data) <- c("category_cd", "data_label")
 
 
-default_mapping <- function()
-{
-
-ColPath <- " / /Tissue/Subject+Demographic/Subject+Phenotype"
-ColName <- "STUDY_ID/SUBJ_ID/Tissue_Type/Sex/Phenotype" 
-
-ColPath <-(unlist(strsplit(ColPath, "/")))
-ColName <- (unlist(strsplit(ColName, "/")))
-
-map_data <- data.frame(ColPath, ColName, stringsAsFactors=FALSE)
-names(map_data) <- c("category_cd", "data_label")
-
-
-return(map_data)
+  map_data
 }
