@@ -10,33 +10,33 @@
 #' @export
 diagnos_mapping <- function(study_type) {
 
-path0 = paste0(study_type, "+Clinical_data+")
-col_path <-"Entry_data+Center_ID/
-Entry_data+Entry_ID/
+# path0 = paste0(study_type, "+Clinical_data+")
+col_path <-"Entry_data+CenterID/
+Entry_data+EntryID/
 Entry_data+Flag/
-Entry_data+Record_ID/
-Entry_data+Entry_date/
+Entry_data+RecordID/
+Entry_data+EntryDate/
 Entry_data+Status/
-Entry_data+Page_NO/
-Entry_data+Last_modification_date/
-Entry_data+Country_ISO_code/
-Entry_data+Repeat_page_number/
-Diagnos+Disease/
-Diagnos+Onset_Date/
-Diagnos+Onset_Day/
-Diagnos+Onset_Month/
-Diagnos+Onset_Year/
-Diagnos+Onset_Date_digit/
-Diagnos+Visit/
-Diagnos+PBLANK/
-Diagnos+Repeat_visit_number/
-Subject+Patient_ID/
+Entry_data+PageNO/
+Entry_data+Lastmodificationdate/
+Entry_data+CountryISOcode/
+Entry_data+Repeatpagnumber/
+Diagnosis+Disease/
+Diagnosis+OnsetDate/
+Diagnosis+OnsetDay/
+Diagnosis+OnsetMonth/
+Diagnosis+OnsetYear/
+Diagnosis+OnsetDateDigit/
+Diagnosis+Visit/
+Diagnosis+PBLANK/
+Diagnosis+Repeatvisitnumber/
+Subject+PatientID/
 Subject+Phenotype"
 col_path <- unlist(strsplit(col_path, "/\n"))
 col_name <- matrix(unlist(strsplit(col_path, "\\+")), ncol = 2 , byrow = TRUE)
 col_name <- col_name[,2]
 
-col_path<- paste0(path0, col_path)
+# col_path<- paste0(path0, col_path)
 col_path <- c(" ", " ", col_path)
 col_name <- c("STUDY_ID","SUBJ_ID",col_name )
  map_data <- data.frame(col_path, col_name, stringsAsFactors = FALSE)

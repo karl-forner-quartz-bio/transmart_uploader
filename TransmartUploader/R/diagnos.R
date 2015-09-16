@@ -51,26 +51,28 @@ disease <- recode(diagnos_data$ITEM001, "0='RA'; 1='SLE'; 2='SSc'; 3='SjS'; 4='M
 res <- data.frame(SUBJ_ID 		= diagnos_data$PATID_ID, 
 		Phenotype 		= pheno, 
 		Disease			= disease, 
-                Onset_Date		= diagnos_data$DATE1DATC,
-		Onset_Day 		= diagnos_data$DDATE1,
-		Onset_Month		= diagnos_data$MDATE1,
-		Onset_Year 		= diagnos_data$YDATE1,
-		Onset_Date_digit	= diagnos_data$DATE1DAT,
-                Visit     		= diagnos_data$VISIT,
-                Patient_ID 		= diagnos_data$PATIDENT,
-                Center_ID  		= diagnos_data$CENT_ID,
-                Entry_ID   		= diagnos_data$ENTRY_ID,
+        OnsetDate		= diagnos_data$DATE1DATC,
+		OnsetDay 		= diagnos_data$DDATE1,
+		OnsetMonth		= diagnos_data$MDATE1,
+		OnsetYear 		= diagnos_data$YDATE1,
+		OnsetDateDigit	= diagnos_data$DATE1DAT,
+        Visit     		= diagnos_data$VISIT,
+        PatientID 		= diagnos_data$PATIDENT,
+        CenterID  		= diagnos_data$CENT_ID,
+        EntryID   		= diagnos_data$ENTRY_ID,
 		Flag 			= diagnos_data$FLAG_,
-		Record_ID 		= diagnos_data$CT_RECID,
-		Entry_date		= diagnos_data$ENTRY_DA,
+		RecordID 		= diagnos_data$CT_RECID,
+		EntryDate		= diagnos_data$ENTRY_DA,
 		Status			= diagnos_data$STATUS,
-		Page_NO 		= diagnos_data$PAGENO,
+		PageNO 		= diagnos_data$PAGENO,
 		PBLANK			= diagnos_data$PBLANK_D,
-		Last_modification_date  = diagnos_data$MERGE_DA,
-		Country_ISO_code 	= diagnos_data$COUN_ID,
-		Repeat_visit_number 	= diagnos_data$VISITREP,	
-		Repeat_page_number 	= diagnos_data$PAGEREP,
-                stringsAsFactors = FALSE)
-				  
+		Lastmodificationdate  = diagnos_data$MERGE_DA,
+		CountryISOcode 	= diagnos_data$COUN_ID,
+		Repeatvisitnumber 	= diagnos_data$VISITREP,	
+		Repeatpagenumber 	= diagnos_data$PAGEREP,
+        stringsAsFactors = FALSE)
+	
+res[is.na(res)] <- ""
+	
   res
 }

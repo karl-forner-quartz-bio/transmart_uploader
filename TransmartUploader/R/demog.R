@@ -48,18 +48,22 @@ if (anyDuplicated(demog_data$PATID_ID) != 0) stop("Error: duplicated Patient ID"
 sex   <- recode(demog_data$SEX, "1='Male'; 2='Female';else=NA")
 race <- recode(demog_data$RACE, "1='Caucasian/White'; 2='Black/African American'; 3='Asian'; 4='American Indian/Alaska native'; 5=' Native Hawaiian/ Other Pacific Islander'; 6='Other';else=NA")
 
+
 res <- data.frame(SUBJ_ID = demog_data$PATID_ID, 
 				Sex 		= sex,
 				Race		= race,
 				Age 		= demog_data$AGE_D,
-				Age_unit 	= demog_data$AGE_DU,
+				Ageunit 	= demog_data$AGE_DU,
 				Birthday 	= demog_data$BIRTHDAT,
-				Birth_year 	= demog_data$YBIRTH,
-				Page_NO 	= demog_data$PAGENO,
-				Last_modification_date  = demog_data$MERGE_DA,
-				Repeat_page_number 	= demog_data$PAGEREP,
-				Patient_ID 		= demog_data$PATIDENT,
+				Birthyear 	= demog_data$YBIRTH,
+				PageNO 	= demog_data$PAGENO,
+				Lastmodification_date  = demog_data$MERGE_DA,
+				Repeatpagenumber 	= demog_data$PAGEREP,
+				PatientID 		= demog_data$PATIDENT,
                 stringsAsFactors = FALSE)
+				
+# res[res==""] <- NA
+res[is.na(res)] <- ""
 				  
   res
 }

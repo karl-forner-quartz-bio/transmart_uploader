@@ -10,19 +10,20 @@
 #' @export
 demog_mapping <- function(study_type) {
 
-path0 = paste0(study_type, "+Clinical_data+ Demography+")
+path0 = "Demography+"
 col_path <-"Sex/
 Race/
 Age/
-Age_unit/
+Ageunit/
 Birthday/
-Birth_year/
-Page_NO/
-Last_modification_date/
-Repeat_page_number/
-Patient_ID"
+Birthyear/
+PageNO/
+Lastmodificationdate/
+Repeatpagenumber/
+PatientID"
 col_path <- unlist(strsplit(col_path, "/\n"))
 col_name <- col_path
+## col_name <- gsub("_","", col_name)
 
 col_path<- paste0(path0, col_path)
 col_path <- c(" ", " ", col_path)
