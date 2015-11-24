@@ -4,7 +4,7 @@ Version: 0.1
 Authors@R: c(person("Karl", "Forner", role = c("aut"), email =
     "karl.forner@quartz.bio"), person("Sepideh", "Babaei", role = c("cre"),
     email = "sepideh.babaei@bayer.com"))
-Description: upload data into transmart, currently using tMDataLoader
+Description: upload data into transmart, currently using tMDataLoader.
 Depends:
     R (>= 3.0.2)
 License: GPL-3
