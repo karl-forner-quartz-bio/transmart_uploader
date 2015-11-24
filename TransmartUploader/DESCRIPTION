@@ -1,9 +1,9 @@
 Package: TransmartUploader
 Title: upload data into transmart, currently using tMDataLoader
 Version: 0.1
-Authors@R: c(person("Karl", "Forner", role = c("aut", "cre"), email =
-    "karl.forner@quartz.bio"), person("Sepideh", "Babaei", role = c("aut",
-    "cre"), email = "sepideh.babaei@bayer.com"))
+Authors@R: c(person("Karl", "Forner", role = c("aut"), email =
+    "karl.forner@quartz.bio"), person("Sepideh", "Babaei", role = c("cre"),
+    email = "sepideh.babaei@bayer.com"))
 Description: upload data into transmart, currently using tMDataLoader
 Depends:
     R (>= 3.0.2)
