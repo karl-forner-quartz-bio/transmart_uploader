@@ -34,8 +34,7 @@ run_tm_etl <- function(
 
   if (inherits(data_dfs, 'data.frame')) data_dfs <- list(data_dfs)
 
-  # get study_id
-
+  # get study_id from the data_dfs
   study_id <- unique(data_dfs[[1]]$STUDY_ID)
   if (is.null(study_id) || !nzchar(study_id)) {
     stop('STUDY_ID is MANDATORY')

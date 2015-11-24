@@ -3,6 +3,7 @@ document('TransmartUploader')
 load_all('TransmartUploader')
 
 test('TransmartUploader')
+test('TransmartUploader', 'sample')
 test('TransmartUploader', 'fam')
 test('TransmartUploader', 'map')
 test('TransmartUploader', 'etl')
