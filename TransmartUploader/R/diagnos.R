@@ -5,6 +5,7 @@
 #'
 #' @param path		the diagnos.tsv file path
 #' @inheritParams upload_clinical_data
+#' @inheritParams diagnos_mapping
 #' @return sample_data		the data.frame with X cols, fixed col names: "STUDY_ID", "SUBJ_ID",...
 #'
 #' @author Sepideh

@@ -4,7 +4,8 @@
 #'  .sas7bdat files can be read and converted to txt files in R using "haven"
 #'
 #' @param path				the demog.txt file path
-#' @inheritParams 			upload_clinical_data
+#' @inheritParams upload_clinical_data
+#' @inheritParams demog_mapping
 #' @return sample_data		the data.frame with X cols, fixed col names: "STUDY_ID", "SUBJ_ID",...
 #'
 #' @author Sepideh
