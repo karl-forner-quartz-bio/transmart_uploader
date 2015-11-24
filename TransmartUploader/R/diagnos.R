@@ -9,14 +9,14 @@
 #'
 #' @author Sepideh
 #' @export
-#' @CRF Diagnos
+#@CRF Diagnos
 upload_diagnos <- function(path, transmart_path, study_type, ...) {
-  
+
   raw <- read_diagnos(path)
-  diagnos  <- format_diagnos(raw)  
+  diagnos  <- format_diagnos(raw)
   study_id <- unique(raw$STUD_ID)
   study_id <- paste0(study_id,"_diagnos")
-  
+
   upload_clinical_data(diagnos, study_id, transmart_path = transmart_path, mapping = diagnos_mapping(study_type))
 }
 
@@ -48,9 +48,9 @@ if (anyDuplicated(diagnos_data$PATID_ID) != 0) stop("Error: duplicated Patient I
 pheno   <- recode(diagnos_data$YESNO1, "1='Control'; 0='Case';else=NA")
 disease <- recode(diagnos_data$ITEM001, "0='RA'; 1='SLE'; 2='SSc'; 3='SjS'; 4='MCTD'; 5='PAPs'; 6='UCTD'; else=NA")
 
-res <- data.frame(SUBJ_ID 		= diagnos_data$PATID_ID, 
-		Phenotype 		= pheno, 
-		Disease			= disease, 
+res <- data.frame(SUBJ_ID 		= diagnos_data$PATID_ID,
+		Phenotype 		= pheno,
+		Disease			= disease,
         OnsetDate		= diagnos_data$DATE1DATC,
 		OnsetDay 		= diagnos_data$DDATE1,
 		OnsetMonth		= diagnos_data$MDATE1,
@@ -68,11 +68,11 @@ res <- data.frame(SUBJ_ID 		= diagnos_data$PATID_ID,
 		PBLANK			= diagnos_data$PBLANK_D,
 		Lastmodificationdate  = diagnos_data$MERGE_DA,
 		CountryISOcode 	= diagnos_data$COUN_ID,
-		Repeatvisitnumber 	= diagnos_data$VISITREP,	
+		Repeatvisitnumber 	= diagnos_data$VISITREP,
 		Repeatpagenumber 	= diagnos_data$PAGEREP,
         stringsAsFactors = FALSE)
-	
+
 res[is.na(res)] <- ""
-	
+
   res
 }
