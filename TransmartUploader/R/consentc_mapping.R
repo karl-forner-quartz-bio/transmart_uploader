@@ -7,18 +7,10 @@
 #'
 #' @author Sepideh
 #' @export
-demog_mapping <- function(study_type) {
+consentc_mapping <- function(study_type) {
 
-path0 = "Demography+"
-col_path <-"Sex/
-Race/
-Age/
-AgeUnit/
-Birthday/
-BirthYear/
-PageNOD/
-LastModificationDateD/
-RepeatPageNumberD/
+path0 = "Study_phase+"
+col_path <-"CS_phase/
 PatientID"
 col_path <- unlist(strsplit(col_path, "/\n"))
 col_name <- col_path

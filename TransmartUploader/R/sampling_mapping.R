@@ -1,4 +1,5 @@
-#' Generate the mapping of variables to the TranSMART tree for demography data
+
+#' Generate the mapping of variables to the TranSMART tree for sampling data
 #'
 #' this mapping is mandatory to upload the data into tranSMART
 #' @ study_type: "Inception" or "Cross_sectional"
@@ -7,18 +8,16 @@
 #'
 #' @author Sepideh
 #' @export
-demog_mapping <- function(study_type) {
+sampling_mapping <- function(study_type) {
 
-path0 = "Demography+"
-col_path <-"Sex/
-Race/
-Age/
-AgeUnit/
-Birthday/
-BirthYear/
-PageNOD/
-LastModificationDateD/
-RepeatPageNumberD/
+path0 = "Sampling+"
+col_path <-"PageNOS/
+DateOfSamplingD/
+DateOfSampling/
+OMICnumber/
+SampleRecordID/
+LastModificationDateS/
+RepeatPageNumberS/
 PatientID"
 col_path <- unlist(strsplit(col_path, "/\n"))
 col_name <- col_path

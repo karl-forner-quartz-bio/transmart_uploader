@@ -13,3 +13,8 @@ upload_diagnos(path,transmart_path = 'Cross_Sectional/CRF/Diagnos', study_type= 
  
 path <- "test_data/demog_CS.txt"
 upload_demog(path,transmart_path = 'Cross_Sectional/CRF/Demog', study_type= "Cross_Sectional", tissue_type = "Blood")
+
+
+## upload CRFs at the sametime
+path <- "test_data/CS"
+upload_crfs(path,transmart_path = 'Cross_Sectional/CRF/Diagnos', study_type= "Cross_Sectional")
