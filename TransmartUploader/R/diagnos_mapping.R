@@ -2,7 +2,7 @@
 #' Generate the mapping of variables to the TranSMART tree fo r diagnos data
 #'
 #' this mapping is mandatory to upload the data into tranSMART
-#' @ study_type: "Inception" or "Cross_sectional"
+#' @param study_type: "Inception" or "Cross_sectional"
 #' study_type = "Cross_sectional"
 #' @return map_data   data.frame with columns "category_cd" and "data_label"
 #'
@@ -47,4 +47,3 @@ if (study_type == "Inception") map_data <- map_data[-grep("DiseaseStatus", map_d
 }
 
 
-    

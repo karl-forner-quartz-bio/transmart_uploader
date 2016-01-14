@@ -9,14 +9,14 @@
 #'
 #' @author Sepideh
 #' @export
-#' @CRF demog
+#' @family demog
 upload_demog <- function(path, transmart_path, study_type, ...) {
-  
+
   raw <- read_demog(path)
-  demog <- format_demog(raw)  
+  demog <- format_demog(raw)
   study_id <- unique(raw$STUD_ID)
   study_id <- paste0(study_id,"_demog")
-  
+
   upload_clinical_data(demog, study_id, transmart_path = transmart_path, mapping = demog_mapping(study_type))
 }
 
@@ -49,7 +49,7 @@ sex   <- recode(demog_data$SEX, "1='Male'; 2='Female';else=NA")
 race <- recode(demog_data$RACE, "1='Caucasian/White'; 2='Black/African American'; 3='Asian'; 4='American Indian/Alaska native'; 5=' Native Hawaiian/ Other Pacific Islander'; 6='Other';else=NA")
 
 
-res <- data.frame(SUBJ_ID = demog_data$PATID_ID, 
+res <- data.frame(SUBJ_ID = demog_data$PATID_ID,
 				Sex 		= sex,
 				Race		= race,
 				Age 		= demog_data$AGE_D,
@@ -61,9 +61,9 @@ res <- data.frame(SUBJ_ID = demog_data$PATID_ID,
 				RepeatPageNumberD 	= demog_data$PAGEREP,
 				PatientID 		= demog_data$PATIDENT,
                 stringsAsFactors = FALSE)
-				
+
 # res[res==""] <- NA
 res[is.na(res)] <- ""
-				  
+
   res
 }

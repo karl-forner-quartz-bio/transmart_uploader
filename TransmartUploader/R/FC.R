@@ -7,17 +7,17 @@
 #'
 #' @author Sepideh
 #' @export
-#' @FC csv 
+#' @family csv
 upload_FC <- function(path, OMICpath, transmart_path, study_type, ...) {
-  
+
   raw <- read_FCs(path, study_type)
-  OMIC <-read_OMIC(OMICpath)  
-  
-  FCs <- format_FCs(raw, OMIC) 
+  OMIC <-read_OMIC(OMICpath)
+
+  FCs <- format_FCs(raw, OMIC)
   map <- FCs_mapping (FCs)
   if (study_type == "Inception") study_id <- "AD2"
   if (study_type == "Cross_Sectional") study_id <- "AD1"
-  
+
   upload_clinical_data(FCs, study_id, transmart_path = transmart_path, mapping = map)
 }
 
@@ -29,13 +29,13 @@ upload_FC <- function(path, OMICpath, transmart_path, study_type, ...) {
 #' @author Sepideh
 #' @export
 read_FCs <- function(path, study_type) {
- 
+
 files <- list.files(path, pattern = "\\.csv$")
 
 dfs <- lapply( paste0(path,files), read.delim, header = T, check.names = FALSE, stringsAsFactors = FALSE)
 
-format_df <- function(df) {  
-  df$comb <- paste(df[[1]],df[[2]], sep = "__")  
+format_df <- function(df) {
+  df$comb <- paste(df[[1]],df[[2]], sep = "__")
   df
 }
 dfs <- lapply(dfs, format_df)
@@ -71,7 +71,7 @@ list(FCs, ids)
 
 #' curate FCs data to upload to tranSMART
 #'
-#' @param FCs		the data.frame read from a FCs files 
+#' @param FCs		the data.frame read from a FCs files
 #' @return sample_data		the data.frame with X cols, fixed col names: "SUBJ_ID", ...
 #' @author Sepideh
 #' @export
@@ -87,10 +87,10 @@ data  <- data [-1,]
 
 ##some check for number of panels...
 ids <- raw[[2]]
-res <- data.frame(cbind(SUBJ_ID= OMIC[match(ids[,1], OMIC[,2]),1], DateFC= OMIC[match(ids[,1], OMIC[,2]),2], data), stringsAsFactors = FALSE )			
+res <- data.frame(cbind(SUBJ_ID= OMIC[match(ids[,1], OMIC[,2]),1], DateFC= OMIC[match(ids[,1], OMIC[,2]),2], data), stringsAsFactors = FALSE )
 # res[res==""] <- NA
 res[is.na(res)] <- ""
-				  
+
   res
 }
 
@@ -101,6 +101,6 @@ res[is.na(res)] <- ""
 #' @author Sepideh
 #' @export
 read_OMIC <- function(OMICpath) {
- 
+
 OMIC <- read.delim(OMICpath)
 }

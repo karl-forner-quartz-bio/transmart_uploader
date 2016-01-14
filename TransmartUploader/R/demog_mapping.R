@@ -1,7 +1,7 @@
 #' Generate the mapping of variables to the TranSMART tree for demography data
 #'
 #' this mapping is mandatory to upload the data into tranSMART
-#' @ study_type: "Inception" or "Cross_sectional"
+#' @param study_type: "Inception" or "Cross_sectional"
 #' study_type = "Cross_sectional"
 #' @return map_data   data.frame with columns "category_cd" and "data_label"
 #'

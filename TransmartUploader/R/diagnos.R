@@ -9,14 +9,14 @@
 #'
 #' @author Sepideh
 #' @export
-#' @CRF Diagnos
+#' @family Diagnos
 upload_diagnos <- function(path, transmart_path, study_type, ...) {
-  
+
   raw <- read_diagnos(path)
-  diagnos  <- format_diagnos(raw)  
+  diagnos  <- format_diagnos(raw)
   study_id <- unique(raw$STUD_ID)
   study_id <- paste0(study_id,"_diagnos")
-  
+
   upload_clinical_data(diagnos, study_id, transmart_path = transmart_path, mapping = diagnos_mapping(study_type))
 }
 
@@ -47,30 +47,30 @@ if (anyDuplicated(diagnos_data$PATID_ID) != 0) stop("Error: duplicated Patient I
 
 pheno   <- recode(diagnos_data$YESNO1, "1='Control'; 0='Case';else=NA")
 disease <- recode(diagnos_data$ITEM001, "0='RA'; 1='SLE'; 2='SSc'; 3='SjS'; 4='MCTD'; 5='PAPs'; 6='UCTD'; else=NA")
-center <-  recode(diagnos_data$CENT_ID, "1001='1001_ES_SAS_Malaga'; 
+center <-  recode(diagnos_data$CENT_ID, "1001='1001_ES_SAS_Malaga';
 1002='1002_ES_SAS_Granada_ER';
 1003='1003_ES_SAS_Granada_NO';
 1004='1004_ES_SAS_Cordoba';
-1005='1005_FRA_UBO'; 
+1005='1005_FRA_UBO';
 1006='1006_ITA_IRCCS';
 1007='1007_GER_DRFZ';
-1008='1008_CHE_UNIGE'; 
+1008='1008_CHE_UNIGE';
 1009='1009_PRT_CHP';
 1010='1010_GER_MHH';
 1011='1011_BEL_KU LEUVEN';
-1012='1012_BEL_UCL'; 
-1013='1013_ITA_UNIMI'; 
-1014='1014_GER_UKK'; 
-1015='1015_AUT_MUW'; 
-1016='1016_HUN_USZ'; 
-1017='1017_ESP_SCS'; 
-1018='1018_ESP_IDIBAPS'; 
+1012='1012_BEL_UCL';
+1013='1013_ITA_UNIMI';
+1014='1014_GER_UKK';
+1015='1015_AUT_MUW';
+1016='1016_HUN_USZ';
+1017='1017_ESP_SCS';
+1018='1018_ESP_IDIBAPS';
 1019='1019_ESP_Biobank'")
 country <- as.character(diagnos_data$COUN_ID)
 
-res <- data.frame(SUBJ_ID 		= diagnos_data$PATID_ID, 
-		DiseaseStatus 	= pheno, 
-		Disease			= disease, 
+res <- data.frame(SUBJ_ID 		= diagnos_data$PATID_ID,
+		DiseaseStatus 	= pheno,
+		Disease			= disease,
         OnsetDate		= diagnos_data$DATE1DATC,
 		OnsetDay 		= diagnos_data$DDATE1,
 		OnsetMonth		= diagnos_data$MDATE1,
@@ -88,12 +88,12 @@ res <- data.frame(SUBJ_ID 		= diagnos_data$PATID_ID,
 		PBLANK			= diagnos_data$PBLANK_D,
 		LastModificationDate  = diagnos_data$MERGE_DA,
 		CountryISOcode 	= country,
-		RepeatVisitNumber 	= diagnos_data$VISITREP,	
+		RepeatVisitNumber 	= diagnos_data$VISITREP,
 		RepeatPageNumber 	= diagnos_data$PAGEREP,
         stringsAsFactors = FALSE)
-	
+
 res[is.na(res)] <- ""
-	
+
   res
 }
 

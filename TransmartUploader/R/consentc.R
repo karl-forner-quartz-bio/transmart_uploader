@@ -9,14 +9,14 @@
 #'
 #' @author Sepideh
 #' @export
-#' @CRF consentc
+#' @family consentc
 upload_consentc <- function(path, transmart_path, study_type, ...) {
-  
+
   raw <- read_consentc(path)
-  consentc <- format_consentc(raw)  
+  consentc <- format_consentc(raw)
   study_id <- unique(raw$STUD_ID)
   study_id <- paste0(study_id,"_consentc")
-  
+
   upload_clinical_data(consentc, study_id, transmart_path = transmart_path, mapping = consentc_mapping(study_type))
 }
 
@@ -47,13 +47,13 @@ if (anyDuplicated(consentc_data$PATID_ID) != 0) stop("Error: duplicated Patient 
 
 phase   <- recode(consentc_data$BIOYN, "1='I'; 0='II';else=NA")
 
-res <- data.frame(SUBJ_ID = consentc_data$PATID_ID, 
+res <- data.frame(SUBJ_ID = consentc_data$PATID_ID,
 				CS_phase 	= phase,
 				PatientID 		= consentc_data$PATIDENT,
                 stringsAsFactors = FALSE)
-				
+
 # res[res==""] <- NA
 res[is.na(res)] <- ""
-				  
+
   res
 }

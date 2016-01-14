@@ -9,14 +9,14 @@
 #'
 #' @author Sepideh
 #' @export
-#' @CRF sampling
+#' @family sampling
 upload_sampling <- function(path, transmart_path, study_type, ...) {
-  
+
   raw <- read_sampling(path)
-  sampling <- format_sampling(raw)  
+  sampling <- format_sampling(raw)
   study_id <- unique(raw$STUD_ID)
   study_id <- paste0(study_id,"_sampling")
-  
+
   upload_clinical_data(sampling, study_id, transmart_path = transmart_path, mapping = sampling_mapping(study_type))
 }
 
@@ -56,9 +56,9 @@ res <- data.frame(SUBJ_ID = sampling_data$PATID_ID,
 				RepeatPageNumberS	= sampling_data$PAGEREP,
 				PatientID 			= sampling_data$PATIDENT,
                 stringsAsFactors 	= FALSE)
-				
+
 # res[res==""] <- NA
 res[is.na(res)] <- ""
-				  
+
   res
 }
