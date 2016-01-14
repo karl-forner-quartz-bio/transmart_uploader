@@ -2,9 +2,14 @@ library(devtools)
 devtools::load_all('TransmartUploader')
 
 ### simple upload
+path <- 'Karl/Test_Upload_Fam'
 upload_fam(fetch_ref_fam(), study_id = "ref",
-  transmart_path = 'Karl/Test_Upload_Fam', tissue_type = "Blood")
-# delete_study_by_id('ref')
+  transmart_path = path, tissue_type = "Blood")
+# res <- delete_study_by_id('ref')
+# res <- delete_study_by_path('\\Karl\\Test_Upload_Fam\\')
+
+
+res <- delete_study_by_path(path)
 
 ### low-level upload: messing up with dataa
 

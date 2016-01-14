@@ -5,14 +5,7 @@
 #' @param data_dfs		the data to upload
 #' @param map_df			the corresponding mapping
 #' @param etl_path		the path in etl tree, as a standard path string
-#' @param host				the transmart DB host
-#' @param port				the transmart DB port
-#' @param java				the java executable to use
-#' @param jar					the tMDataLoader jar file
-#' @param config			the tMDataLoader config file template
-#' @param dir					the directory in which to setup the data files
-#' 										to upload. If not given will occur in a temp dir
-#' @param ...					additional arguments to \code{execute_etl_cmd}
+#' @param ...					additional arguments to \code{run_etl_command}
 #'
 #' @return the upload summary statistics as a data frame, or NULL
 #'
@@ -22,15 +15,8 @@ run_tm_etl <- function(
   data_dfs,
   map_df,
   etl_path,
-  host = 'localhost',
-  port = 5432,
-  java = 'java',
-  jar = find_extdata_file('tm_etl.jar'),
-  config = find_extdata_file('Config.groovy.brew'),
-  dir = NULL,
   ...
 ) {
-  check_jar(java, jar)
 
   if (inherits(data_dfs, 'data.frame')) data_dfs <- list(data_dfs)
 
@@ -46,6 +32,54 @@ run_tm_etl <- function(
   filenames <- sprintf('%s_%i.txt', study_id, seq_along(data_dfs))
   map_file_df <- build_tmdataloader_mapping_file(data_dfs, map_df, filenames)
 
+  data_dir <- 'ETL'
+
+  preprocess <- function() {
+    setup_etl_files(data_dfs, map_file_df, data_dir, etl_path, study_id)
+  }
+
+  postprocess <- function() {
+    fetch_etl_summary_statistics(file.path(data_dir, etl_path))
+  }
+
+  stats <- run_etl_command(data_dir = data_dir,
+    preprocess = preprocess,
+    postprocess = postprocess, ...)
+
+
+  invisible(stats)
+}
+
+
+
+
+#' utility to run a command using the tMDataLoader tool
+#'
+#' @param java				the java executable to use
+#' @param jar					the tMDataLoader jar file
+#' @param config			the tMDataLoader config file template
+#' @inheritParams create_etl_config
+#' @param postprocess	function to call after
+#' @param ...					additional arguments to \code{execute_etl_cmd}
+#'
+#' @return the postprocess output if any, or the execute_etl_cmd
+#'
+#' @author karl
+#' @export
+run_etl_command <- function(
+  host = 'localhost',
+  port = 5432,
+  java = 'java',
+  jar = find_extdata_file('tm_etl.jar'),
+  data_dir = 'dummy',
+  config = find_extdata_file('Config.groovy.brew'),
+  dir = NULL,
+  preprocess = NULL,
+  postprocess = NULL,
+  ...
+) {
+  check_jar(java, jar)
+
   if (is.null(dir)) {
     dir <- tempfile()
     dir.create(dir)
@@ -57,19 +91,20 @@ run_tm_etl <- function(
   old <- setwd(dir)
   on.exit(setwd(old), add = TRUE)
 
-  ## write config
   config_file <- 'Config.groovy'
-  data_dir <- 'ETL'
-  brew(config, config_file) # N.B: data_dir must be set before
+  create_etl_config(config_file, host = host, port = port,
+    data_dir = data_dir, config = config)
 
-  setup_etl_files(data_dfs, map_file_df, data_dir, etl_path, study_id)
+  if (!is.null(preprocess)) preprocess()
 
   out <- execute_etl_cmd(java, jar, config_file, ...)
 
-  stats <- fetch_etl_summary_statistics(file.path(data_dir, etl_path))
+  if (!is.null(postprocess)) return(postprocess())
 
-  invisible(stats)
+  invisible(out)
 }
+
+
 
 execute_etl_cmd <- function(java, jar, config_file, extra = '') {
   args <- sprintf('-jar %s -c %s -i -s %s', jar, config_file, extra)
@@ -89,41 +124,54 @@ execute_etl_cmd <- function(java, jar, config_file, extra = '') {
 #' delete a study by id using the tMDataLoader tool
 #'
 #' @param id								the id of the study to delete
-#' @inheritParams run_tm_etl
+#' @param ... 		  			  passed to run_etl_command
 #'
 #' @return the command output
 #'
 #' @author karl
 #' @export
-delete_study_by_id <- function(
-  id,
-  host = 'localhost',
-  port = 5432,
-  java = 'java',
-  jar = find_extdata_file('tm_etl.jar'),
-  config = find_extdata_file('Config.groovy.brew')
-) {
-
-  id <- toupper(id)
-
-  dir <- tempfile()
-  dir.create(dir)
-  on.exit(unlink(dir, recursive = TRUE), add = TRUE)
-
-  old <- setwd(dir)
-  on.exit(setwd(old), add = TRUE)
-
-  ## write config
-  config_file <- 'Config.groovy'
-  data_dir <- 'dummy'
-  brew(config, config_file) # N.B: data_dir must be set before
-
-  extra <- paste('--delete-study-by-id', id)
-  out <- execute_etl_cmd(java, jar, config_file, extra = extra)
-
-  invisible(out)
+delete_study_by_id <- function(id, ...) {
+  cmd <- paste('--delete-study-by-id', toupper(id))
+  invisible(run_etl_command(extra = cmd), ...)
 }
 
+
+#' delete a study by path using the tMDataLoader tool
+#'
+#' @param path							the transmart path of the study
+#' @param ... 		  			  passed to run_etl_command
+#'
+#' @return the command output
+#'
+#' @author karl
+#' @export
+delete_study_by_path <- function(path, ...) {
+  path <- paste0('\\\\', gsub('/', '\\\\\\\\', path))
+  cmd <- paste('--delete-study-by-path', path)
+  invisible(run_etl_command(extra = cmd), ...)
+}
+
+#' create the ETL config
+#'
+#' @param path			  the path of config file to create
+#' @param host				the transmart DB host
+#' @param port				the transmart DB port
+#' @param data_dir    the data directory to set
+#' @param config			the tMDataLoader config file template
+#'
+#' @author karl
+create_etl_config <- function(
+  path,
+  host = 'localhost',
+  port = 5432,
+  data_dir = 'dummy',
+  config = find_extdata_file('Config.groovy.brew'))
+{
+  force(data_dir)
+  force(host)
+  force(port)
+  brew(config, path) # N.B: data_dir must be set before
+}
 
 
 setup_etl_files <- function(data_dfs, map_df, data_dir, etl_path, prefix) {
