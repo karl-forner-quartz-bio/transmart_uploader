@@ -3,22 +3,12 @@
 \alias{delete_study_by_id}
 \title{delete a study by id using the tMDataLoader tool}
 \usage{
-delete_study_by_id(id, host = "localhost", port = 5432, java = "java",
-  jar = find_extdata_file("tm_etl.jar"),
-  config = find_extdata_file("Config.groovy.brew"))
+delete_study_by_id(id, ...)
 }
 \arguments{
 \item{id}{the id of the study to delete}
 
-\item{host}{the transmart DB host}
-
-\item{port}{the transmart DB port}
-
-\item{java}{the java executable to use}
-
-\item{jar}{the tMDataLoader jar file}
-
-\item{config}{the tMDataLoader config file template}
+\item{...}{passed to run_etl_command}
 }
 \value{
 the command output

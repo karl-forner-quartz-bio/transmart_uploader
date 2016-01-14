@@ -3,9 +3,7 @@
 \alias{run_tm_etl}
 \title{run the tMDataLoader tool}
 \usage{
-run_tm_etl(data_dfs, map_df, etl_path, host = "localhost", port = 5432,
-  java = "java", jar = find_extdata_file("tm_etl.jar"),
-  config = find_extdata_file("Config.groovy.brew"), dir = NULL, ...)
+run_tm_etl(data_dfs, map_df, etl_path, ...)
 }
 \arguments{
 \item{data_dfs}{the data to upload}
@@ -14,20 +12,7 @@ run_tm_etl(data_dfs, map_df, etl_path, host = "localhost", port = 5432,
 
 \item{etl_path}{the path in etl tree, as a standard path string}
 
-\item{host}{the transmart DB host}
-
-\item{port}{the transmart DB port}
-
-\item{java}{the java executable to use}
-
-\item{jar}{the tMDataLoader jar file}
-
-\item{config}{the tMDataLoader config file template}
-
-\item{dir}{the directory in which to setup the data files
-to upload. If not given will occur in a temp dir}
-
-\item{...}{additional arguments to \code{execute_etl_cmd}}
+\item{...}{additional arguments to \code{run_etl_command}}
 }
 \value{
 the upload summary statistics as a data frame, or NULL
