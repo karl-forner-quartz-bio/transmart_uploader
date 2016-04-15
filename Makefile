@@ -2,7 +2,7 @@ R=R
 RSCRIPT=Rscript
 PKG=TransmartUploader
 
-check: roxygen
+check:
 	[ -e .check ] || mkdir .check
 	$(R) CMD build TransmartUploader
 	$(R) CMD check TransmartUploader*.gz
