@@ -1,13 +1,13 @@
 
 #' upload clinical data (no high dimensional data) using tMDataLoader
 #'
-#' @param dfs								the data to upload as a data frame or a list
+#' @param dfs				the data to upload as a data frame or a list
 #'                          of data frames
-#' @param study_id					the transmart STUDYID
-#' @param mapping						the corresponding mapping
-#' @param tissue_type				tissue_type of data
-#' @param transmart_path		the path in etl tree, as a standard path string
-#' @param ...								additional arguments to \code{execute_etl_cmd}
+#' @param study_id			the transmart STUDYID
+#' @param mapping			the corresponding mapping
+#' @param tissue_type		tissue_type of data
+#' @param transmart_path	the path in etl tree, as a standard path string
+#' @param ...				additional arguments to \code{execute_etl_cmd}
 #'
 #' @return the upload summary statistics as a data frame, or NULL
 #'
@@ -40,12 +40,4 @@ upload_clinical_data <- function(
 
   res
 }
-
-
-
-
-
-
-
-
 

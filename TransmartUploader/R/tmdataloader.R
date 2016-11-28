@@ -107,7 +107,8 @@ run_etl_command <- function(
 
 
 execute_etl_cmd <- function(java, jar, config_file, extra = '') {
-  args <- sprintf('-jar %s -c %s -i -s %s', jar, config_file, extra)
+  # args <- sprintf('-jar %s -c %s -i -s %s', jar, config_file, extra)
+  args <- sprintf('-jar %s -c %s -i -s %s --visit-name-first', jar, config_file, extra)
   out <- system2(java, args, stdout = TRUE, stderr = TRUE)
   status <- attr(out, 'status')
   if (!is.null(status)) {
