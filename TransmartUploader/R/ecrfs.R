@@ -16,6 +16,7 @@ read_db <- function(DB, study_type, ...) {
  dblist_sub <- subset(dblist, grepl(study_type, dblist))
  
  dblist_sub <- subset(dblist_sub, !grepl("mapping", dblist_sub))
+ dblist_sub <- subset(dblist_sub, !grepl("_flag", dblist_sub))
  
  crf_label <- 0
  df <- dbReadTable(db,dblist_sub[1])
