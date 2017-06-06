@@ -53,7 +53,7 @@ test_that('build_tmdataloader_mapping_file', .build_tmdataloader_mapping_file())
 
 
 
-.setup_etl_files <- function() {
+.write_etl_files <- function() {
   dir <- tempfile()
   dir.create(dir)
   old <- setwd(dir)
@@ -65,14 +65,14 @@ test_that('build_tmdataloader_mapping_file', .build_tmdataloader_mapping_file())
   map <- TransmartUploader:::build_tmdataloader_mapping_file(dfs, MAP_DF,
     fns)
 
-  TransmartUploader:::setup_etl_files(dfs, map, 'ETL', 'toto/titi/tutu', 'prefix')
+  TransmartUploader:::write_etl_files(dfs, map, 'ETL', 'toto/titi/tutu', 'prefix')
 
   files <- dir('ETL/toto/titi/tutu')
   expect_identical(sort(files),
     c("prefix_1.txt", "prefix_2.txt", "prefix_Mapping_File.txt"))
 
 }
-test_that('setup_etl_files', .setup_etl_files())
+test_that('write_etl_files', .write_etl_files())
 
 
 
@@ -82,7 +82,7 @@ test_that('setup_etl_files', .setup_etl_files())
   db <- requires_db()
 
 
-  test_dir <- normalizePath('tMDataLoader-samples')
+  test_dir <- normalizePath(fetch_tMDataLoader_samples())
   setup_temp_dir()
 
   dir <- "Test Studies/Low Dimentional Serial Data Test"

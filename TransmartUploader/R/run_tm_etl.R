@@ -2,9 +2,10 @@
 
 #' run the tMDataLoader tool
 #'
-#' @param data_dfs		the data to upload
-#' @param map_df			the corresponding mapping
-#' @param etl_path		the path in etl tree, as a standard path string
+#' Will reformat the data and generate automatically the Mapping file using
+#' the supplied mapper map_df
+#'
+#' @inheritParams just_run_tm_etl
 #' @param ...					additional arguments to \code{run_etl_command}
 #'
 #' @return the upload summary statistics as a data frame, or NULL
@@ -20,8 +21,7 @@ run_tm_etl <- function(
 
   if (inherits(data_dfs, 'data.frame')) data_dfs <- list(data_dfs)
 
-  # get study_id
-
+  # fetch study_id
   study_id <- unique(data_dfs[[1]]$STUDY_ID)
   if (is.null(study_id) || !nzchar(study_id)) {
     stop('STUDY_ID is MANDATORY')
@@ -32,12 +32,35 @@ run_tm_etl <- function(
   filenames <- sprintf('%s_%i.txt', study_id, seq_along(data_dfs))
   map_file_df <- build_tmdataloader_mapping_file(data_dfs, map_df, filenames)
 
-  data_dir <- 'ETL'
+  just_run_tm_etl(data_dfs, map_file_df, etl_path = etl_path, ...)
+}
 
-  preprocess <- function() {
-    setup_etl_files(data_dfs, map_file_df, data_dir, etl_path, study_id)
+
+#' run the tMDataLoader tool on aleady processed data
+#'
+#' @inheritParams params
+#' @param ...					additional arguments to \code{run_etl_command}
+#' @return the upload summary statistics as a data frame, or NULL
+#' @author karl
+#' @keywords internal
+just_run_tm_etl <- function(
+  data_dfs,
+  map_file_df,
+  etl_path,
+  data_dir = 'ETL',
+  ...)
+{
+
+  study_id <- unique(data_dfs[[1]]$STUDY_ID)
+  if (is.null(study_id) || !nzchar(study_id)) {
+    stop('STUDY_ID is MANDATORY')
   }
 
+  preprocess <- function() {
+    write_etl_files(data_dfs, map_file_df, data_dir, etl_path, study_id)
+  }
+
+  force(etl_path)
   postprocess <- function() {
     fetch_etl_summary_statistics(file.path(data_dir, etl_path))
   }
@@ -50,14 +73,13 @@ run_tm_etl <- function(
   invisible(stats)
 }
 
-
-
-
-
-
-
-
-setup_etl_files <- function(data_dfs, map_df, data_dir, etl_path, prefix) {
+#' write the data as files for the ETL
+#'
+#' @inheritParams params
+#' @param prefix	the prefix of the Mapping file
+#' @author karl
+#' @keywords internal
+write_etl_files <- function(data_dfs, map_df, data_dir, etl_path, prefix) {
 
   # make transmart path
   path <- file.path(data_dir, etl_path)
@@ -73,6 +95,7 @@ setup_etl_files <- function(data_dfs, map_df, data_dir, etl_path, prefix) {
   map_path <- file.path(path, paste0(prefix, '_Mapping_File.txt'))
   write.table(map_df, map_path, sep = '\t', quote = FALSE, row.names = FALSE)
 
+  invisible()
 }
 
 
@@ -102,10 +125,10 @@ format_data_for_tmdataloader <- function(df, mapping_df) {
 
 
 
-# generate the mapping for tMDataLoader as a data frame
+# generate the mapping file for tMDataLoader as a data frame
 # N.B: it is ordered in the same order than data_dfs
-build_tmdataloader_mapping_file <- function(data_dfs, mapping_df, filenames) {
-  vars <- mapping_df$data_label
+build_tmdataloader_mapping_file <- function(data_dfs, mapper, filenames) {
+  vars <- mapper$data_label
   # 1. remove columns not in the mapping_df
   for (i in 1:length(data_dfs)) {
     cols <- intersect(names(data_dfs[[i]]), vars)
@@ -114,7 +137,7 @@ build_tmdataloader_mapping_file <- function(data_dfs, mapping_df, filenames) {
 
   # make a subset of the mapping file
   cols <- unique(unlist(lapply(data_dfs, names), use.names = FALSE))
-  map <- mapping_df[mapping_df$data_label %in% cols, ]
+  map <- mapper[mapper$data_label %in% cols, ]
 
 
   # now create the tMDataLoader mapping file with columns filename and col_nbr

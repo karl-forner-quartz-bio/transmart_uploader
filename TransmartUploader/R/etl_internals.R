@@ -32,7 +32,8 @@ create_etl_config <- function(
 #' @param postprocess	function to call after
 #' @param ...					additional arguments to \code{execute_etl_cmd}
 #'
-#' @return the postprocess output if any, or the execute_etl_cmd
+#' @return a list if the execute_etl_cmd output,
+#' 	and the postprocess output if any
 #'
 #' @author karl
 #' @keywords internal
@@ -68,9 +69,11 @@ run_etl_command <- function(
 
   out <- execute_etl_cmd(java, jar, config_file, ...)
 
-  if (!is.null(postprocess)) return(postprocess())
+  res <- list(execute_etl_cmd = out)
 
-  invisible(out)
+  if (!is.null(postprocess)) res$postprocess <- postprocess()
+
+  res
 }
 
 
@@ -85,6 +88,7 @@ execute_etl_cmd <- function(java, jar, config_file, extra = '') {
     msg <- paste0(msg, '\noutput: \n', paste0(out, collapse = '\n'))
     stop(msg)
   }
+
 
   out
 }

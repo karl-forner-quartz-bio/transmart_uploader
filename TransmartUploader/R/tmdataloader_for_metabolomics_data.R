@@ -61,7 +61,7 @@ run_tm_etl_for_metabolomics_data <- function(
   data_dir <- 'ETL'
   brew(config, config_file) # N.B: data_dir must be set before
 
-  setup_etl_files_for_metabolomics(platform=platform, data_dfs, map_df, data_dir, etl_path, study_id, platform_name)
+  write_etl_files_for_metabolomics(platform=platform, data_dfs, map_df, data_dir, etl_path, study_id, platform_name)
 
   out <- execute_etl_cmd_novisit(java, jar, config_file, ...)
 
@@ -70,7 +70,7 @@ run_tm_etl_for_metabolomics_data <- function(
 }
 
 
-setup_etl_files_for_metabolomics <- function(platform, data_dfs, map_df, data_dir, etl_path, prefix, platform_name) {
+write_etl_files_for_metabolomics <- function(platform, data_dfs, map_df, data_dir, etl_path, prefix, platform_name) {
 
   # make transmart path
 path <- file.path(data_dir, etl_path)
