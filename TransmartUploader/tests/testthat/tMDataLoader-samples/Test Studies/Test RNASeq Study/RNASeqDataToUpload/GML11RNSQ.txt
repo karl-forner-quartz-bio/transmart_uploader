@@ -1,0 +1,14 @@
+#PLATFORM_ID: GML11RNSQ		
+#PLATFORM_TITLE: RNASeq Platform Test		
+#SPECIES: Homo Sapiens		
+Transcript ID	Gene Symbol	Organism
+NM_001011874	MEF2C	Homo sapiens
+NM_001195662	ALDH8A1	Homo sapiens
+NM_011283	MEF2A	Homo sapiens
+NM_011441	MEF2C	Homo sapiens
+NR_033530	MEF2C	Homo sapiens
+NM_001177658	GDA	Homo sapiens
+NM_025300	ASCC1	Homo sapiens
+NM_008866	MEF2C	Homo sapiens
+NM_001159751	BTD	Homo sapiens
+NM_001159750	MEF2C	Homo sapiens

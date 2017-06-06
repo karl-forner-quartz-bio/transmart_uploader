@@ -1,0 +1,5 @@
+# STUDY_ID: MLTVCF		
+# STUDY_TITLE: Test Study		
+SUBJECT_ID	SAMPLE_CD	Category_cd
+Subject_0	VCF_TST001	Biomarker_Data+Single_Nucleotide_Polymorphism+Variant_Call_Format_(VCF)
+Subject_1	VCF_TST002	Biomarker_Data+Single_Nucleotide_Polymorphism+Variant_Call_Format_(VCF)

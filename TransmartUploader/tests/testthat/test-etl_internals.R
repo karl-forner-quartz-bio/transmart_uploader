@@ -52,6 +52,7 @@ test_that('format_data_for_tmdataloader', .format_data_for_tmdataloader())
 test_that('build_tmdataloader_mapping_file', .build_tmdataloader_mapping_file())
 
 
+
 .setup_etl_files <- function() {
   dir <- tempfile()
   dir.create(dir)
@@ -75,11 +76,32 @@ test_that('setup_etl_files', .setup_etl_files())
 
 
 
-.run_tm_etl <- function() {
+.run_etl_command <- function() {
+  run_etl_command <- TransmartUploader:::run_etl_command
 
+  db <- requires_db()
+
+
+  test_dir <- normalizePath('tMDataLoader-samples')
+  setup_temp_dir()
+
+  dir <- "Test Studies/Low Dimentional Serial Data Test"
+
+  etl_test <- 'ETL/Test Studies'
+  dir.create(etl_test, recursive = TRUE)
+
+  file.copy(file.path(test_dir, dir), etl_test, recursive = TRUE)
+
+  TransmartUploader:::create_etl_config('Config.groovy', host = db$host, port = db$port,
+    data_dir = 'ETL')
+  browser()
+  out <- run_etl_command(host = db$host, port = db$port, data_dir = 'ETL', dir = '.')
+
+
+  res <- delete_study_by_path(dir, host = db$host, port = db$port)
 }
 
-test_that('run_tm_etl', .run_tm_etl())
+test_that('run_etl_command', .run_etl_command())
 
 
 

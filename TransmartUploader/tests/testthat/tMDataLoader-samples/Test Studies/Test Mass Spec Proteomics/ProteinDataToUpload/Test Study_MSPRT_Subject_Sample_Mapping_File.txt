@@ -1,0 +1,16 @@
+TRIAL_NAME	 SITE_ID 	SUBJECT_ID	SAMPLE_CD	PLATFORM 	TISSUE_TYPE 	ATTRIBUTE_1  	ATTRIBUTE_2	CATEGORY_CD	SOURCE_CD 
+MSPRT		1	GSM01	PRMS888	Control	Week 01		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		2	GSM02	PRMS888	Control	Week 01		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		3	GSM03	PRMS888	Treated	Week 01		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		4	GSM04	PRMS888	Treated	Week 01		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		5	GSM05	PRMS888	Treated	Week 01		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		1	GSM06	PRMS888	Control	Week 02		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		2	GSM07	PRMS888	Control	Week 02		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		3	GSM08	PRMS888	Treated	Week 02		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		4	GSM09	PRMS888	Treated	Week 02		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		5	GSM10	PRMS888	Treated	Week 02		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		1	GSM11	PRMS888	Control	Week 10		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		2	GSM12	PRMS888	Control	Week 10		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		3	GSM13	PRMS888	Treated	Week 10		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		4	GSM14	PRMS888	Treated	Week 10		Biromarkers+MS_Proteomics+ATTR1	STD
+MSPRT		5	GSM15	PRMS888	Treated	Week 10		Biromarkers+MS_Proteomics+ATTR1	STD

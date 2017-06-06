@@ -1,0 +1,6 @@
+STUDY_ID	SUBJ_ID	Sample Type
+MSPRT	1	Control
+MSPRT	2	Control
+MSPRT	3	Treated
+MSPRT	4	Treated
+MSPRT	5	Treated

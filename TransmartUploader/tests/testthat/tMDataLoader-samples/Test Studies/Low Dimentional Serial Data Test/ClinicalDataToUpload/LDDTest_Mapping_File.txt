@@ -1,0 +1,14 @@
+filename	category_cd	col_nbr	data_label	data_label_source 	variable_type
+LDDTest.txt		1	STUDY_ID		
+LDDTest.txt		2	SUBJ_ID		
+LDDTest.txt		3	Time		
+LDDTest.txt	Laboratory_Measurements+Luminex+Analyte_1+$$Time	4			Timepoint
+LDDTest.txt	Laboratory_Measurements+Luminex+Analyte_2+$$Time	5			Timepoint
+LDDTest.txt	Laboratory_Measurements+Luminex+Analyte_3+$$Time	6			Timepoint
+LDDTest.txt	Laboratory_Measurements+Luminex+Analyte_4+$$Time	7			Timepoint
+LDDTest.txt	Laboratory_Measurements+Luminex+Analyte_5+$$Time	8			Timepoint
+LDDTest.txt	Laboratory_Measurements+Luminex+Analyte_6+$$Time	9			Timepoint
+LDDTest.txt	Clinical_Data	10	Health		
+LDDTest.txt	Subject+Demographics	11	Sex		
+LDDTest.txt	Subject+Demographics	12	Age		
+LDDTest.txt	Subject+Demographics	13	Race		

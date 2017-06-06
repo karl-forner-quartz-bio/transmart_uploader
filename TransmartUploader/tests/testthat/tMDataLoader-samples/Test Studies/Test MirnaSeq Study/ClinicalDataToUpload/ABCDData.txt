@@ -1,0 +1,9 @@
+STUDY_ID	SUBJ_ID	Sample Type
+MIRNASEQ	1	Control
+MIRNASEQ	2	Control
+MIRNASEQ	3	Control
+MIRNASEQ	4	Control
+MIRNASEQ	5	Treated
+MIRNASEQ	6	Treated
+MIRNASEQ	7	Treated
+MIRNASEQ	8	Treated

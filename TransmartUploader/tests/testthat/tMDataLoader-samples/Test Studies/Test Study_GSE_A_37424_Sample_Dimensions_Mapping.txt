@@ -1,0 +1,5 @@
+Category_CD	Value	Unit	Display Label
+Week 01	7	days	Week 01
+Week 02	14	days	Week 02
+Week 05	35	days	Week 05
+Week 06	42	days	Week 06

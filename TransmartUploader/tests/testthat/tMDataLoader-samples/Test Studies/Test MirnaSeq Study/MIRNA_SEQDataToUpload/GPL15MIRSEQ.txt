@@ -1,0 +1,14 @@
+#PLATFORM_ID: GPL15MIRSEQ				
+#PLATFORM_TITLE: MIRSEQ Test Platform				
+#SPECIES: Homo Sapiens				
+ID_REF	MIRNA_ID	SN_ID	PLT_NAME	ORGANISM
+1	hsa-let-7a		GPL15MIRSEQ	Homo Sapiens
+2	hsa-let-7c		GPL15MIRSEQ	Homo Sapiens
+3	hsa-let-7d		GPL15MIRSEQ	Homo Sapiens
+4	hsa-let-7e		GPL15MIRSEQ	Homo Sapiens
+5			GPL15MIRSEQ	Homo Sapiens
+6	hsa-let-7g		GPL15MIRSEQ	Homo Sapiens
+7	hsa-miR-1		GPL15MIRSEQ	Homo Sapiens
+8	hsa-miR-9		GPL15MIRSEQ	Homo Sapiens
+9	hsa-miR-10a		GPL15MIRSEQ	Homo Sapiens
+10	hsa-miR-10b		GPL15MIRSEQ	Homo Sapiens

@@ -1,0 +1,9 @@
+STUDY_ID	SUBJ_ID	Sample Type
+TRNSQ	1	Control
+TRNSQ	2	Control
+TRNSQ	3	Control
+TRNSQ	4	Control
+TRNSQ	5	Treated
+TRNSQ	6	Treated
+TRNSQ	7	Treated
+TRNSQ	8	Treated
