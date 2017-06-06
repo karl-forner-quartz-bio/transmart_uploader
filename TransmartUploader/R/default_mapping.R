@@ -1,4 +1,4 @@
- #' Generate the default mapping of variables to the TranSMART tree
+#' Generate the default mapping of variables to the TranSMART tree
 #'
 #' this mapping is mandatory to upload the data into tranSMART
 #' This is the default map and should be edited based on our tranSMARt tree structure
