@@ -1,0 +1,15 @@
+dataDir = '<%=data_dir%>'
+
+db.hostname = '<%=host%>'
+db.port = <%=port%>
+
+db.sid = 'xe'
+db.username = 'tm_dataloader'
+db.password = 'tm_dataloader'
+
+// Uncomment the following 3 lines for PostgreSQL:
+
+db.jdbcConnectionString = "jdbc:postgresql://${db.hostname}:${db.port}/transmart"
+db.jdbcDriver = 'org.postgresql.Driver'
+db.sql.storedProcedureSyntax = 'PostgreSQL'
+
