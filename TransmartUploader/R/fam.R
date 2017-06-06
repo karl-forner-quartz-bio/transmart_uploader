@@ -52,14 +52,14 @@ format_fam <- function(fam_data) {
 
   ids <- as.character(ids)
 
+  sex <- recode(fam_data[[5]], "1='Male'; 2='Female';else=NA",
+    as.numeric.result = FALSE)
 
-  sex <- recode(fam_data[[5]], "1='Male'; 2='Female';else=NA")
-  pheno <- recode(fam_data[[6]], "1='Control'; 2='Case';else=NA")
+  pheno <- recode(fam_data[[6]], "1='Control'; 2='Case';else=NA",
+    as.numeric.result = FALSE)
 
   res <- data.frame(SUBJ_ID = ids, Sex = sex, Phenotype = pheno,
     stringsAsFactors = FALSE)
-
-  res[res == 0] <- NA
 
   res
 }
