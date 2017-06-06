@@ -87,18 +87,20 @@ test_that('setup_etl_files', .setup_etl_files())
 
   dir <- "Test Studies/Low Dimentional Serial Data Test"
 
-  etl_test <- 'ETL/Test Studies'
+  etl_test <- 'ETL/TransmartUploaderTest  Studies'
   dir.create(etl_test, recursive = TRUE)
 
   file.copy(file.path(test_dir, dir), etl_test, recursive = TRUE)
 
   TransmartUploader:::create_etl_config('Config.groovy', host = db$host, port = db$port,
     data_dir = 'ETL')
-  browser()
+
   out <- run_etl_command(host = db$host, port = db$port, data_dir = 'ETL', dir = '.')
 
+  expect_match(tail(out, 1), 'COMPLETED')
 
-  res <- delete_study_by_path(dir, host = db$host, port = db$port)
+  # cleanup DB
+  delete_study_by_path(dir, host = db$host, port = db$port)
 }
 
 test_that('run_etl_command', .run_etl_command())
