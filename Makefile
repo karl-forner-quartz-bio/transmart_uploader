@@ -27,3 +27,9 @@ check-doc: roxygen
 doc: roxygen
 	rm -f Rd2.pdf TransmartUploader.pdf
 	R CMD Rd2pdf -o TransmartUploader.pdf TransmartUploader
+
+dev.pdf: roxygen
+	rm -f $@
+	R CMD Rd2pdf -o $@ TransmartUploader
+	
+	
