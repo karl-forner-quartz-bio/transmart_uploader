@@ -1,4 +1,18 @@
 
+#' fetch the tMDataLoader-samples
+#'
+#' samples from \url{https://github.com/Clarivate-LSPS/tMDataLoader-samples}
+#' have been integrated into this package for testing purposes
+#'
+#' It contains in particular a mispelled 'Low Dimentional Serial Data Test'
+#'
+#' @return the path of the directory containing the sample test studies
+#'
+#' @author karl
+#' @export
+fetch_tMDataLoader_samples <- function() {
+  find_extdata_file('sample_data/tMDataLoader-samples')
+}
 
 
 
@@ -28,3 +42,5 @@ fetch_test4_sample_data <- function() {
 #' @author karl
 #' @export
 fetch_ref_fam <- function() { find_extdata_file('sample_data/fam/ref.fam') }
+
+

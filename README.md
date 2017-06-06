@@ -7,6 +7,9 @@ Specifically developed for the www.precisesads.eu project.
 
 The current version of **tMdataloader** is 1.2.4-116.
 
+The package now also makes use of
+https://github.com/Clarivate-LSPS/tMDataLoader-samples for testing purposes.
+
 ## Usage
 
 ### documentation
