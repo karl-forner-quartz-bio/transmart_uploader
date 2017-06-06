@@ -36,7 +36,7 @@ upload_clinical_data <- function(
 
   dfs <- lapply(dfs, .fix_df)
 
-  res <- run_tm_etl(dfs, mapping, etl_path = transmart_path)
+  res <- run_tm_etl(dfs, mapping, etl_path = transmart_path, ...)
 
   res
 }
