@@ -1,6 +1,7 @@
 R=R
 RSCRIPT=Rscript
 PKG=TransmartUploader
+DB=
 
 check:
 	[ -e .check ] || mkdir .check
@@ -9,9 +10,14 @@ check:
 
 	
 tests: 
-	 $(RSCRIPT) -e 'library(methods);devtools::test("$(PKG)")'
+	 TRANSMART_DB=$(DB) $(RSCRIPT) -e 'library(methods);devtools::test("$(PKG)")'
 	 
+set-local-db:
+	$(eval DB := localhost@5432)
 	 
+tests-on-local-db: set-local-db tests
+	
+
 roxygen:
 	 $(RSCRIPT) -e 'library(methods);devtools::document("$(PKG)")'
 
