@@ -5,10 +5,11 @@
 #' Will reformat the data and generate automatically the Mapping file using
 #' the supplied mapper map_df
 #'
-#' @inheritParams just_run_tm_etl
+#' @inheritParams params
+#' @inheritParams run_tm_etl_on_processed_data
 #' @param ...					additional arguments to \code{run_etl_command}
 #'
-#' @return the upload summary statistics as a data frame, or NULL
+#' @return the upload output log and summary statistics as a list
 #'
 #' @author karl
 #' @export
@@ -32,71 +33,62 @@ run_tm_etl <- function(
   filenames <- sprintf('%s_%i.txt', study_id, seq_along(data_dfs))
   map_file_df <- build_tmdataloader_mapping_file(data_dfs, map_df, filenames)
 
-  just_run_tm_etl(data_dfs, map_file_df, etl_path = etl_path, ...)
+  run_tm_etl_on_processed_data(data_dfs, map_file_df, etl_path = etl_path, ...)
 }
 
 
-#' run the tMDataLoader tool on aleady processed data
+#' run the tMDataLoader tool on already formatted and mapped data
 #'
+#' @param dir		directory in which to create the input files
+#' 	and to execute the ETL
 #' @inheritParams params
 #' @param ...					additional arguments to \code{run_etl_command}
-#' @return the upload summary statistics as a data frame, or NULL
+#' @return the upload output log and summary statistics as a list
 #' @author karl
 #' @keywords internal
-just_run_tm_etl <- function(
+run_tm_etl_on_processed_data <- function(
   data_dfs,
   map_file_df,
   etl_path,
+  dir = NULL,
   data_dir = 'ETL',
+  host = 'localhost',
+  port = 5432,
   ...)
 {
+  if (inherits(data_dfs, 'data.frame')) data_dfs <- list(data_dfs)
 
+  ### setup the working dir
+  if (is.null(dir)) {
+    dir <- tempfile()
+    dir.create(dir)
+    on.exit(unlink(dir, recursive = TRUE), add = TRUE)
+  } else {
+    if (!file.exists(dir)) stop('Error, dir does not exit: ', dir)
+  }
+
+  old <- setwd(dir)
+  on.exit(setwd(old), add = TRUE)
+
+  ### input files
   study_id <- unique(data_dfs[[1]]$STUDY_ID)
   if (is.null(study_id) || !nzchar(study_id)) {
     stop('STUDY_ID is MANDATORY')
   }
+  write_etl_files(data_dfs, map_file_df, data_dir, etl_path, study_id)
 
-  preprocess <- function() {
-    write_etl_files(data_dfs, map_file_df, data_dir, etl_path, study_id)
-  }
+  ### config file
+  config_file <- 'Config.groovy'
+  create_etl_config(config_file, host = host, port = port,
+    data_dir = data_dir)
 
-  force(etl_path)
-  postprocess <- function() {
-    fetch_etl_summary_statistics(file.path(data_dir, etl_path))
-  }
+  out <- execute_etl_cmd(config_file, ...)
 
-  stats <- run_etl_command(data_dir = data_dir,
-    preprocess = preprocess,
-    postprocess = postprocess, ...)
+  stats <- fetch_etl_summary_statistics(file.path(data_dir, etl_path))
 
-
-  invisible(stats)
+  invisible(list(output = out, stats = stats))
 }
 
-#' write the data as files for the ETL
-#'
-#' @inheritParams params
-#' @param prefix	the prefix of the Mapping file
-#' @author karl
-#' @keywords internal
-write_etl_files <- function(data_dfs, map_df, data_dir, etl_path, prefix) {
-
-  # make transmart path
-  path <- file.path(data_dir, etl_path)
-  dir.create(path, recursive = TRUE)
-
-  # must be in the same order then dfs
-  filenames <- file.path(path, unique(map_df$filename))
-  for (i in seq_along(filenames)) {
-    write.table(data_dfs[[i]], filenames[[i]],
-      sep = '\t', quote = FALSE, row.names = FALSE)
-  }
-
-  map_path <- file.path(path, paste0(prefix, '_Mapping_File.txt'))
-  write.table(map_df, map_path, sep = '\t', quote = FALSE, row.names = FALSE)
-
-  invisible()
-}
 
 
 

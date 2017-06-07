@@ -9,17 +9,18 @@ run_tm_etl(data_dfs, map_df, etl_path, ...)
 \arguments{
 \item{data_dfs}{the data to upload as a (list of) data frame(s)}
 
-\item{map_df}{the corresponding mapping}
+\item{map_df}{the mapper to generate the mapping file if needed}
 
 \item{etl_path}{the path in etl tree, as a standard path string}
 
 \item{...}{additional arguments to \code{run_etl_command}}
 }
 \value{
-the upload summary statistics as a data frame, or NULL
+the upload output log and summary statistics as a list
 }
 \description{
-run the tMDataLoader tool
+Will reformat the data and generate automatically the Mapping file using
+the supplied mapper map_df
 }
 \author{
 karl
