@@ -29,30 +29,6 @@ test_that('format_data_for_tmdataloader', .format_data_for_tmdataloader())
 
 
 
-.build_tmdataloader_mapping_file <- function() {
-
-
-  dfs <- lapply(DATA_DFS, TransmartUploader:::format_data_for_tmdataloader,
-     MAP_DF)
-
-  fns <- sprintf('data%i.txt', seq_along(dfs))
-  res <- TransmartUploader:::build_tmdataloader_mapping_file(dfs, MAP_DF,
-    fns)
-
-  expect_true(is.data.frame(res))
-
-  all_cols <- sort(unique(unlist(lapply(dfs, names), use.names = FALSE)))
-
-  expect_identical(sort(unique(res$data_label)), all_cols)
-
-  expect_identical(names(res),
-     c('filename',	'category_cd', 	'col_nbr', 'data_label'))
-
-}
-test_that('build_tmdataloader_mapping_file', .build_tmdataloader_mapping_file())
-
-
-
 .write_etl_data_file <- function() {
   write_etl_data_file <- TransmartUploader:::write_etl_data_file
   setup_temp_dir()
@@ -90,7 +66,7 @@ test_that('write_etl_data_file', .write_etl_data_file())
   dfs <- lapply(DATA_DFS, TransmartUploader:::format_data_for_tmdataloader,
     MAP_DF)
   fns <- sprintf('prefix_%i.txt', seq_along(dfs))
-  map <- TransmartUploader:::build_tmdataloader_mapping_file(dfs, MAP_DF,
+  map <- TransmartUploader:::generate_mapping(dfs, MAP_DF,
     fns)
 
   TransmartUploader:::write_etl_files(dfs, map, 'ETL', 'toto/titi/tutu', 'prefix')

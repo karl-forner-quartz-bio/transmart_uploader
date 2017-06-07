@@ -16,7 +16,7 @@
 upload_clinical_data <- function(
   dfs,
   study_id,
-  mapping = default_mapping(),
+  mapping = default_mapper(),
   tissue_type = " ",
   transmart_path = paste0("Tests", "_", study_id),
   ...

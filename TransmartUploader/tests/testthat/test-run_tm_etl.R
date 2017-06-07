@@ -1,11 +1,5 @@
 context('run_tm_etl')
 
-data <- fetch_test4_sample_data()
-DATA_DFS <- data[c("Test4_1.txt", "Test4_2.txt")]
-map <- data[["Test4_Mapping_File.txt"]]
-map_df <- map[, c('category_cd', 'data_label')]
-MAP_DF <- unique(map_df)
-
 
 
 # run on "Test Studies/Low Dimentional Serial Data Test"
@@ -43,6 +37,7 @@ MAP_DF <- unique(map_df)
   expect_equal(nrow(res$stats), length(data_df) - 1)
 }
 test_that('run_tm_etl_on_processed_data', .run_tm_etl_on_processed_data())
+
 
 
 ### tests not requiring the DB, coz nothing to do or error

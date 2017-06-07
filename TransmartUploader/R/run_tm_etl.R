@@ -31,7 +31,7 @@ run_tm_etl <- function(
   # prepare data
   data_dfs <- lapply(data_dfs, format_data_for_tmdataloader, map_df)
   filenames <- sprintf('%s_%i.txt', study_id, seq_along(data_dfs))
-  map_file_df <- build_tmdataloader_mapping_file(data_dfs, map_df, filenames)
+  map_file_df <- generate_mapping(data_dfs, map_df, filenames)
 
   run_tm_etl_on_processed_data(data_dfs, map_file_df, etl_path = etl_path, ...)
 }
@@ -45,7 +45,7 @@ run_tm_etl <- function(
 #' @param ...					additional arguments to \code{run_etl_command}
 #' @return the upload output log and summary statistics as a list
 #' @author karl
-#' @keywords internal
+#' @export
 run_tm_etl_on_processed_data <- function(
   data_dfs,
   map_file_df,
@@ -117,37 +117,4 @@ format_data_for_tmdataloader <- function(df, mapping_df) {
 
 
 
-# generate the mapping file for tMDataLoader as a data frame
-# N.B: it is ordered in the same order than data_dfs
-build_tmdataloader_mapping_file <- function(data_dfs, mapper, filenames) {
-  vars <- mapper$data_label
-  # 1. remove columns not in the mapping_df
-  for (i in 1:length(data_dfs)) {
-    cols <- intersect(names(data_dfs[[i]]), vars)
-    data_dfs[[i]] <- data_dfs[[i]][, cols, drop = FALSE]
-  }
-
-  # make a subset of the mapping file
-  cols <- unique(unlist(lapply(data_dfs, names), use.names = FALSE))
-  map <- mapper[mapper$data_label %in% cols, ]
-
-
-  # now create the tMDataLoader mapping file with columns filename and col_nbr
-  .make_mapping <- function(i) {
-    df <- data_dfs[[i]]
-    mm <- data.frame(data_label = names(df), col_nbr = 1:ncol(df),
-      stringsAsFactors = FALSE)
-    res <- merge(mm, map, by = 'data_label')
-    res$filename <- filenames[i]
-    res <- res[, c('filename',	'category_cd', 	'col_nbr', 'data_label')]
-
-    # order by col_nbr
-    res[order(res$col_nbr), ]
-  }
-
-  res <- lapply(seq_along(data_dfs), .make_mapping)
-  res <- do.call(rbind, res)
-
-  res
-}
 
