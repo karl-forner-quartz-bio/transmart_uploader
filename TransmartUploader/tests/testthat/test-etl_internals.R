@@ -53,11 +53,39 @@ test_that('build_tmdataloader_mapping_file', .build_tmdataloader_mapping_file())
 
 
 
+.write_etl_data_file <- function() {
+  write_etl_data_file <- TransmartUploader:::write_etl_data_file
+  setup_temp_dir()
+
+  df <- head(mtcars)
+  write_etl_data_file(df, 'toto.txt')
+
+  df2 <- read.table('toto.txt', header = TRUE, sep = "\t", check.names = FALSE,
+    stringsAsFactors = FALSE)
+
+  expect_equivalent(df2, df)
+
+  # add some NAs
+  df[1, 5] <- NA
+  df[5, 2] <- NA
+
+  write_etl_data_file(df, 'toto.txt')
+  df2 <- read.table('toto.txt', header = TRUE, sep = "\t", colClasses = 'character',
+    stringsAsFactors = FALSE)
+  expect_identical(df2[1, 5], '')
+  expect_identical(df2[5, 2], '')
+
+  df2 <- read.table('toto.txt', header = TRUE, sep = "\t",
+    stringsAsFactors = FALSE, check.names = FALSE)
+
+  expect_equivalent(df2, df)
+}
+test_that('write_etl_data_file', .write_etl_data_file())
+
+
+
 .write_etl_files <- function() {
-  dir <- tempfile()
-  dir.create(dir)
-  old <- setwd(dir)
-  on.exit({setwd(old); unlink(dir, recursive = TRUE)}, add = TRUE)
+  setup_temp_dir()
 
   dfs <- lapply(DATA_DFS, TransmartUploader:::format_data_for_tmdataloader,
     MAP_DF)
@@ -76,11 +104,10 @@ test_that('write_etl_files', .write_etl_files())
 
 
 
-.run_etl_command <- function() {
-  run_etl_command <- TransmartUploader:::run_etl_command
+.execute_etl_cmd <- function() {
+  execute_etl_cmd <- TransmartUploader:::execute_etl_cmd
 
   db <- requires_db()
-
 
   test_dir <- normalizePath(fetch_tMDataLoader_samples())
   setup_temp_dir()
@@ -92,18 +119,23 @@ test_that('write_etl_files', .write_etl_files())
 
   file.copy(file.path(test_dir, dir), etl_test, recursive = TRUE)
 
-  TransmartUploader:::create_etl_config('Config.groovy', host = db$host, port = db$port,
-    data_dir = 'ETL')
+  TransmartUploader:::create_etl_config('Config.groovy', host = db$host,
+    port = db$port, data_dir = 'ETL')
 
-  out <- run_etl_command(host = db$host, port = db$port, data_dir = 'ETL', dir = '.')
+  study_id <- 'LDDTest'
+  suppressWarnings(try(
+      delete_study_by_id(study_id, host = db$host, port = db$port),
+    silent = TRUE))
+
+  out <- execute_etl_cmd('Config.groovy')
 
   expect_match(tail(out, 1), 'COMPLETED')
 
   # cleanup DB
-  delete_study_by_path(dir, host = db$host, port = db$port)
+   delete_study_by_id(study_id, host = db$host, port = db$port)
 }
 
-test_that('run_etl_command', .run_etl_command())
+test_that('execute_etl_cmd', .execute_etl_cmd())
 
 
 

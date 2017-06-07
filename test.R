@@ -1,6 +1,6 @@
 library(devtools)
 document('TransmartUploader')
-check_doc('TransmartUploader')
+check_man('TransmartUploader')
 
 
 test('TransmartUploader', 'etl_internals')

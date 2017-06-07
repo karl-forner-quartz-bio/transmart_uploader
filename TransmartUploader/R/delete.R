@@ -13,7 +13,7 @@
 #' @export
 delete_study_by_id <- function(id, ...) {
   cmd <- paste('--delete-study-by-id', toupper(id))
-  invisible(run_etl_command(extra = cmd, ...))
+  invisible(execute_etl_cmd(extra = cmd, ...))
 }
 
 
@@ -29,6 +29,6 @@ delete_study_by_id <- function(id, ...) {
 delete_study_by_path <- function(path, ...) {
   path <- paste0('\\\\', gsub('/', '\\\\\\\\', path))
   cmd <- paste('--delete-study-by-path', path)
-  invisible(run_etl_command(extra = cmd, ...))
+  invisible(execute_etl_cmd(extra = cmd, ...))
 }
 
