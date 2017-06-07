@@ -1,5 +1,16 @@
 context('mapping')
 
+.base_mapper <- function() {
+  map <- TransmartUploader:::base_mapper()
+
+  expect_identical(names(map), c("category_cd", "data_label"))
+  expect_true(nrow(map) == 3)
+  expect_equivalent(sapply(map, class), c("character", "character"))
+}
+test_that('base_mapper', .base_mapper())
+
+
+
 .default_mapper <- function() {
   map <- default_mapper()
   expect_identical(names(map), c("category_cd", "data_label"))
@@ -7,6 +18,27 @@ context('mapping')
   expect_equivalent(sapply(map, class), c("character", "character"))
 }
 test_that('default_mapper', .default_mapper())
+
+
+
+.make_mapper <- function() {
+  make_mapper <- TransmartUploader:::make_mapper
+
+  expect_error(make_mapper(LETTERS[1:3], LETTERS[1:2]), 'bad arg "categories"')
+
+  map_df <- make_mapper(LETTERS[1:3], rev(LETTERS[1:3]))
+
+  df <- map_df[-(1:nrow(TransmartUploader:::base_mapper())), ]
+  expect_identical(df[[1]], rev(LETTERS[1:3]))
+  expect_identical(df[[2]], LETTERS[1:3])
+
+  # recycling
+  map_df <- make_mapper(LETTERS[1:3], 'toto')
+  df <- map_df[-(1:nrow(TransmartUploader:::base_mapper())), ]
+  expect_identical(unique(df[[1]]), 'toto')
+  expect_identical(df[[2]], LETTERS[1:3])
+}
+test_that('make_mapper', .make_mapper())
 
 
 
