@@ -22,6 +22,7 @@ context('input data')
 
   expect_identical(names(df2)[1:3], c('STUDY_ID', 'SUBJ_ID', 'Tissue_Type'))
   expect_identical(df2[, -(1:3)], head(iris))
+
 }
 test_that('format_input_data', .format_input_data())
 

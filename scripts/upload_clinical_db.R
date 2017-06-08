@@ -7,7 +7,6 @@ library(RSQLite)
 document('TransmartUploader')
 load_all('TransmartUploader')
 
-study_type <- "inception"
 DB <- 'db/db_clinical.db'
 
 tbls <- read_tables_for_cohort(DB, 'inception')

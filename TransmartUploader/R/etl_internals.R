@@ -123,7 +123,7 @@ write_etl_files <- function(data_dfs, map_df, data_dir, etl_path, prefix) {
 write_etl_data_file <- function(df, path) {
 
   # all columns to character
-  for (i in seq_along(df)) mode(df[[i]]) <- 'character'
+  for (i in seq_along(df)) df[[i]] <- as.character(df[[i]])
 
   #NA to ''
   df[is.na(df)] <- ''

@@ -1,0 +1,11 @@
+filename	category_cd	col_nbr	data_label
+data.txt	 	1	STUDY_ID
+data.txt	 	2	SUBJ_ID
+data.txt	Subjects+Medical_History	6	histological_type
+data.txt	Subjects+Demographics	7	Age
+data.txt	Subjects+Medical_History+Tumor_Assessment	9	lymphatic_invasion
+data.txt	Clinical_Data+Clinical_Endpoints	11	person_neoplasm_cancer_status
+data.txt	Subjects+Medical_History+Tumor_Assessment	14	tumor_residual_disease
+data.txt	Subjects+Medical_History+Tumor_Assessment	15	venous_invasion
+data.txt	Subjects+Medical_History+Tumor_Assessment	20	Atomic_neoplasm_subdivision
+data.txt	Subjects+Medical_History+Tumor_Assessment	24	neoplasm_histologic_grade

@@ -11,7 +11,7 @@
 #'
 #' @return the formatted data frame
 #' @author karl
-#' @keywords internal
+#' @export
 format_input_data <- function(df, study_id = NULL, tissue_type = NULL) {
   if (!is.null(study_id)) df$STUDY_ID <- study_id
   if (!is.null(tissue_type)) df$Tissue_Type <- tissue_type

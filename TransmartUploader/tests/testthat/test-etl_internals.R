@@ -8,25 +8,6 @@ map_df <- map[, c('category_cd', 'data_label')]
 MAP_DF <- unique(map_df)
 
 
-.format_data_for_tmdataloader <- function() {
-  df <- iris
-  df$SUBJ_ID <- 1:nrow(df)
-  df$toto <- 2
-  df$STUDY_ID <- "coucou"
-
-  map <- data.frame(
-    data_label = c(names(iris), c('STUDY_ID', 'SUBJ_ID'))
-    , stringsAsFactors = FALSE)
-  map$category_cd <- 'dummy'
-
-  df2 <- TransmartUploader:::format_data_for_tmdataloader(df, map)
-  expect_identical(names(df2)[1:2], c('STUDY_ID', 'SUBJ_ID'))
-  expect_identical(sort(names(df2)), sort(map$data_label))
-
-  expect_true(all(names(df2) %in% map$data_label))
-}
-test_that('format_data_for_tmdataloader', .format_data_for_tmdataloader())
-
 
 
 .write_etl_data_file <- function() {
@@ -63,11 +44,9 @@ test_that('write_etl_data_file', .write_etl_data_file())
 .write_etl_files <- function() {
   setup_temp_dir()
 
-  dfs <- lapply(DATA_DFS, TransmartUploader:::format_data_for_tmdataloader,
-    MAP_DF)
+  dfs <- lapply(DATA_DFS, TransmartUploader:::format_input_data)
   fns <- sprintf('prefix_%i.txt', seq_along(dfs))
-  map <- TransmartUploader:::generate_mapping(dfs, MAP_DF,
-    fns)
+  map <- TransmartUploader:::generate_mapping(dfs, MAP_DF, fns)
 
   TransmartUploader:::write_etl_files(dfs, map, 'ETL', 'toto/titi/tutu', 'prefix')
 
@@ -81,34 +60,21 @@ test_that('write_etl_files', .write_etl_files())
 
 
 .execute_etl_cmd <- function() {
-  execute_etl_cmd <- TransmartUploader:::execute_etl_cmd
-
   db <- requires_db()
+  # N.B: upload_tMDataLoader_sample directly uses execute_etl_cmd
+  upload_tMDataLoader_sample <- TransmartUploader:::upload_tMDataLoader_sample
 
-  test_dir <- normalizePath(fetch_tMDataLoader_samples())
-  setup_temp_dir()
-
-  dir <- "Test Studies/Low Dimentional Serial Data Test"
-
-  etl_test <- 'ETL/TransmartUploaderTest  Studies'
-  dir.create(etl_test, recursive = TRUE)
-
-  file.copy(file.path(test_dir, dir), etl_test, recursive = TRUE)
-
-  TransmartUploader:::create_etl_config('Config.groovy', host = db$host,
-    port = db$port, data_dir = 'ETL')
-
+  etl_path <- STUDIES
+  sample_dir <- "Test Studies/Low Dimentional Serial Data Test"
   study_id <- 'LDDTest'
-  suppressWarnings(try(
-      delete_study_by_id(study_id, host = db$host, port = db$port),
-    silent = TRUE))
 
-  out <- execute_etl_cmd('Config.groovy')
+  delete_study_by_path(STUDIES, host = db$host, port = db$port)
+  res <- upload_tMDataLoader_sample(sample_dir, etl_path, study_id,
+    host = db$host, port = db$port)
 
-  expect_match(tail(out, 1), 'COMPLETED')
+  expect_match(res, 'MSG Procedure completed successfully', all = FALSE)
 
-  # cleanup DB
-   delete_study_by_id(study_id, host = db$host, port = db$port)
+  delete_study_by_path(STUDIES, host = db$host, port = db$port)
 }
 
 test_that('execute_etl_cmd', .execute_etl_cmd())

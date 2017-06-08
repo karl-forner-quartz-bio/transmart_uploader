@@ -4,3 +4,4 @@ map <- data[["Test4_Mapping_File.txt"]]
 map_df <- map[, c('category_cd', 'data_label')]
 MAP_DF <- unique(map_df)
 
+STUDIES <- 'TransmartUploaderTest Studies'

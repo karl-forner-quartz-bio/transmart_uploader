@@ -29,7 +29,7 @@ run_tm_etl <- function(
   }
 
   # prepare data
-  data_dfs <- lapply(data_dfs, format_data_for_tmdataloader, map_df)
+  data_dfs <- lapply(data_dfs, format_input_data)
   filenames <- sprintf('%s_%i.txt', study_id, seq_along(data_dfs))
   map_file_df <- generate_mapping(data_dfs, map_df, filenames)
 
@@ -92,28 +92,6 @@ run_tm_etl_on_processed_data <- function(
 
 
 
-
-# this function reorders the df so that the first 2 columns
-# are the STUDY_ID and SUBJ_ID, and remove unmapped columns
-format_data_for_tmdataloader <- function(df, mapping_df) {
-  STUDY_ID <- 'STUDY_ID'
-  SUBJ_ID <- 'SUBJ_ID'
-
-  if (!STUDY_ID %in% names(df)) stop("STUDY_ID column is missing")
-  if (!SUBJ_ID %in% names(df)) stop("SUBJ_ID column is missing")
-
-  # remove columns not in mapping
-  cols <- intersect(names(df), mapping_df$data_label)
-  df <- df[, cols]
-
-  # reorder the columns
-  mandatory <- c(STUDY_ID, SUBJ_ID)
-  newcols <- c(mandatory, setdiff(names(df), mandatory))
-
-  df <- df[, newcols]
-
-  df
-}
 
 
 

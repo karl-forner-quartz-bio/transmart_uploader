@@ -14,6 +14,23 @@ fetch_tMDataLoader_samples <- function() {
   find_extdata_file('sample_data/tMDataLoader-samples')
 }
 
+#' upload atMDataLoader-sample
+#'
+#' @keywords internal
+upload_tMDataLoader_sample <- function(sample_dir, etl_path, study_id, ...) {
+  test_dir <- normalizePath(fetch_tMDataLoader_samples())
+
+  setup_temp_dir()
+
+  etl_test <- file.path('ETL', etl_path)
+  dir.create(etl_test, recursive = TRUE)
+  file.copy(file.path(test_dir, sample_dir), etl_test, recursive = TRUE)
+
+  TransmartUploader:::create_etl_config('Config.groovy', data_dir = 'ETL', ...)
+
+  execute_etl_cmd('Config.groovy')
+}
+
 
 
 #' fetch the Test4 sample data

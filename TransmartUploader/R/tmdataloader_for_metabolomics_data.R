@@ -33,15 +33,15 @@ run_tm_etl_for_metabolomics_data <- function(
   ...
 ) {
   check_jar(java, jar)
-  
+
   # get study_id
   study_id <- unique(map_df$STUDY_ID)
   if (is.null(study_id) || !nzchar(study_id)) {
     stop('STUDY_ID is MANDATORY')
   }
-  
+
   platform_name <- unique(map_df$PLATFORM)
-  
+
   if (is.null(dir)) {
     #dir <- tempfile()
     dir <- "/home/sbabaei/metabolomics_test"
