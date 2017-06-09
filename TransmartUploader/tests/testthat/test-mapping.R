@@ -46,6 +46,25 @@ test_that('add_categories', .add_categories())
 
 
 
+.simple_categorization <- function() {
+  df <- DATA_DFS[[1]]
+  base_categ <- TransmartUploader:::base_categorization()
+  extra_vars <- setdiff(names(df), base_categ[[2]])
+
+  categ <- simple_categorization(df)
+  expect_true(all(!extra_vars %in% categ[[2]]))
+  expect_identical(categ, base_categ)
+
+  categ <- simple_categorization(df, 'Clinical')
+  expect_true(all(names(df) %in% categ[[2]]))
+
+  expect_identical(unique(categ[match(extra_vars, categ[[2]]), 1]), 'Clinical')
+}
+test_that('simple_categorization', .simple_categorization())
+
+
+
+
 .build_mapping_file <- function() {
   build_mapping_file <- TransmartUploader:::build_mapping_file
 

@@ -55,6 +55,31 @@ base_categorization <- function() {
   map_data
 }
 
+#' utility to make a categorization with a default category
+#'
+#' @inheritParams mapping
+#' @param default_category	a default category to apply to \code{vars} if not null
+#' @params vars							the vars on which to apply the default category
+#' @return a data.frame with columns "category_cd" and "data_label"
+#'
+
+#' @seealso mapping
+#' @author karl
+#' @export
+simple_categorization <- function(
+  df,
+  default_category = NULL,
+  categ = base_categorization(),
+  vars = setdiff(colnames(df), categ[[2]]))
+{
+  if (!is.null(default_category)) {
+    categ <- add_categories(vars, default_category, categ)
+  }
+
+  categ
+}
+
+
 #' add categories to an existing categorization
 #'
 #' @param vars				the var names to map as a character vector
