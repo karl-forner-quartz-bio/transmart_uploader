@@ -41,6 +41,27 @@ test_that('write_etl_data_file', .write_etl_data_file())
 
 
 
+.write_etl_mapping_file <- function() {
+  setup_temp_dir()
+
+  path <- 'map.txt'
+  TransmartUploader:::write_etl_mapping_file(MAP_DF, path)
+
+  expect_true(file.exists(path))
+  df <- read.table(path, header = TRUE, sep = '\t', stringsAsFactors = FALSE)
+  expect_equivalent(df, MAP_DF)
+
+  ### with a merge mode
+  TransmartUploader:::write_etl_mapping_file(MAP_DF, path, merge = 'REPLACE')
+  expect_identical(readLines(path, 1), "#MERGE_MODE: REPLACE")
+
+  df <- read.table(path, skip = 1, header = TRUE, sep = '\t', stringsAsFactors = FALSE)
+  expect_equivalent(df, MAP_DF)
+}
+test_that('write_etl_mapping_file', .write_etl_mapping_file())
+
+
+
 .write_etl_files <- function() {
   setup_temp_dir()
 

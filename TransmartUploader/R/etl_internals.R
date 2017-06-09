@@ -105,9 +105,20 @@ write_etl_files <- function(data_dfs, map_df, data_dir, etl_path, prefix) {
   }
 
   map_path <- file.path(path, paste0(prefix, '_Mapping_File.txt'))
-  write.table(map_df, map_path, sep = '\t', quote = FALSE, row.names = FALSE)
+  write_etl_mapping_file(map_df, map_path)
 
   invisible()
+}
+
+write_etl_mapping_file <- function(map_df, path, merge = attr(map_df, 'merge')) {
+  con <- file(path, 'wt')
+  on.exit(close(con), add = TRUE)
+
+  if (!is.null(merge) && nzchar(merge[1])) {
+    merge <- merge[1]
+    cat('#MERGE_MODE: ', merge, '\n', sep = '', file = con)
+  }
+  write.table(map_df, con, sep = '\t', quote = FALSE, row.names = FALSE)
 }
 
 
