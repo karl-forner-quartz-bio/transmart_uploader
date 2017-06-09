@@ -48,12 +48,15 @@ execute_etl_cmd <- function(
   java = 'java',
   jar = find_extdata_file('tm_etl.jar'),
   extra = '',
+  visit_name_first = TRUE,
   ...)
  {
   check_jar(java, jar)
 
   # args <- sprintf('-jar %s -c %s -i -s %s', jar, config_file, extra)
-  args <- sprintf('-jar %s -c %s -i -s %s --visit-name-first', jar, config_file, extra)
+
+  args <- sprintf('-jar %s -c %s -i -s %s', jar, config_file, extra)
+  if (visit_name_first) args <- paste0(args, ' --visit-name-first')
 
   out <- system2(java, args, stdout = TRUE, stderr = TRUE)
   status <- attr(out, 'status')

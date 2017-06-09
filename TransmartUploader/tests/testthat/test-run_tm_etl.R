@@ -1,6 +1,49 @@
 context('run_tm_etl')
 
 
+.duplicates <- function() {
+  run_tm_etl_on_processed_data <- TransmartUploader:::run_tm_etl_on_processed_data
+  db <- requires_db()
+
+  browser()
+
+  etl_root <- STUDIES
+  etl_path <-  file.path(etl_root, "Toto/ClinicalDataToUpload")
+
+  delete_study_by_path(etl_root, host = db$host, port= db$port)
+
+  df <- data.frame(
+    STUDY_ID = 'toto',
+    SUBJ_ID = 1:5,
+    VAR = LETTERS[1:5],
+    stringsAsFactors = FALSE
+    )
+  categ <- simple_categorization(df, 'VARS')
+  mapping <- build_mapping_file(df, categ)
+
+  # with duplicated ID
+  df2 <- df
+  df2$SUBJ_ID[2] <- 1
+
+  res <- run_tm_etl_on_processed_data(df2, mapping, etl_path = etl_path,
+    host = db$host, port= db$port)
+
+  expect_match(res$output, 'MSG Procedure completed successfully', all = FALSE)
+
+
+  ### with duplicated line
+  df2 <- rbind(df[1,], df)
+  res <- run_tm_etl_on_processed_data(df2, mapping, etl_path = etl_path,
+    host = db$host, port= db$port)
+  expect_match(res$output, 'MSG Procedure completed successfully', all = FALSE)
+
+  expect_is(res$stats, 'data.frame')
+  # -1 for STUDY_ID
+  expect_equal(nrow(res$stats), length(data_df) - 1)
+}
+test_that('duplicates', .duplicates())
+
+
 
 # run on "Test Studies/Low Dimentional Serial Data Test"
 .run_tm_etl_on_processed_data <- function() {
@@ -30,7 +73,7 @@ context('run_tm_etl')
   res <- run_tm_etl_on_processed_data(data_df, map_df, etl_path = etl_path,
     host = db$host, port= db$port, dir = '.')
 
-  expect_match(tail(res$output, 1), 'COMPLETED')
+  expect_match(res$output, 'MSG Procedure completed successfully', all = FALSE)
 
   expect_is(res$stats, 'data.frame')
   # -1 for STUDY_ID

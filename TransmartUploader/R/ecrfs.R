@@ -1,38 +1,38 @@
 #' Read clinical data from the db_clinical to upload in transmart
 #'
 #' @param DB				the db file path ("/PRECISESADS_WP8/P603.01_proj/data/db/db_clinical.db"), PRECISESADS db_clincial consists of ALL ecrfs of patients with unique patient ids
-#' @param study_type		"cross_sectional" or "inception"							
-#' 
+#' @param study_type		"cross_sectional" or "inception"
+#'
 #' @return 					df of all clinical data sorted by SUBJ_ID and VISIT, study id, crf labels
 #'
 #' @author Sepideh
-#' 
+#'
 #' @export
 
 read_db <- function(DB, study_type, ...) {
-  
+
  db = dbConnect(RSQLite::SQLite(), DB)
  dblist <- dbListTables(db)
  dblist_sub <- subset(dblist, grepl(study_type, dblist))
- 
+
  dblist_sub <- subset(dblist_sub, !grepl("mapping", dblist_sub))
  dblist_sub <- subset(dblist_sub, !grepl("_flag", dblist_sub))
- 
+
  crf_label <- 0
  df <- dbReadTable(db,dblist_sub[1])
  study_id <- unique(df$STUDY_ID)
- 
+
  crf <- gsub(paste0(study_type,"_"),"", dblist_sub)
  crf<- paste0(".", crf)
  crf_label[1:ncol(df)] <- crf[1]
- 
+
  for (cnt in 2:length(dblist_sub))
  {
  tmp <- dbReadTable(db, dblist_sub[cnt])
  l1 <- ncol(df)
- 
+
 df <- merge(df, tmp, by= c("SUBJ_ID", "VISIT"), suffixes = c(crf[cnt-1], crf[cnt]), all.x=TRUE, all.y = TRUE)
- 
+
  l2 <- ncol(df)
  crf_label[(l1+1):l2] <- crf[cnt]
 }
@@ -55,13 +55,13 @@ edit_labels <- function(df, crf_label) {
 df$OMICID  <- paste0("N",df$OMICID)
 
 # this is needed for removing duplicated parameters
- 
+
 # colnames(df)[which(names(df) == "VISIT.sampling")] <- "VISIT"
 colnames(df)[which(names(df) == "CENTER.sampling")] <- "CENTER"
  colnames(df)[which(names(df) == "USUBJID.sampling")] <- "USUBJID"
 colnames(df)[which(names(df) == "ONSETDT")] <- "ONSET.DT"
 colnames(df)[which(names(df) == "LBDT")] <- "LB.DT"
- 
+
 df[is.na(df)] <- ""
 
 crf_label <- gsub("\\.","", crf_label)
@@ -80,7 +80,7 @@ map_data <- data.frame(col_path, col_name, stringsAsFactors = FALSE)
 names(map_data) <- c("category_cd", "data_label")
 
 res <- list(df, map_data)
-return(res)   
+return(res)
 }
 
 
@@ -88,17 +88,17 @@ return(res)
 #'
 #' @param map_data		mapping table (from edit_labels)
 #' @inheritParams 		edit_labels
-#' @return 				clean mapping table		
+#' @return 				clean mapping table
 #' @author 			Sepideh
 #' @export
 
 remove_extra_var <- function(map_data) {
 
-extra_var <- c("SUBJ_ID", "VISIT_NAME", ".cmrbdt", ".concmed", ".consentc", ".demog", ".diagnos", ".lab", ".sampling", ".sympt", 
+extra_var <- c("SUBJ_ID", "VISIT_NAME", ".cmrbdt", ".concmed", ".consentc", ".demog", ".diagnos", ".lab", ".sampling", ".sympt",
 			   "DCON", "MCON", "YCON", "CONDAT", "AGEU","ONSET_DT", "ONSETDY", "ONSETMO", "ONSETYR", "ONSET.DT", "LB.DT",
 			   "DONE1YN", "DDATE1","MDATE1","YDATE1","LB_DT", "BRTHDTC", "LACTDTC", "DSAMPL", "CMDOSEU", "CENT_ID", "COUN_ID",
 			   "MSAMPL", "YSAMPL", "DSAMPLDAT", "SAMPLDAT.", "BMI_DU", "HEIGU", "WEIGHTU",
-			   ".heart", ".muske",".gastro", ".kidney", ".lung", ".nervsys", ".skinmuc", ".vascular") 
+			   ".heart", ".muske",".gastro", ".kidney", ".lung", ".nervsys", ".skinmuc", ".vascular")
 
 for (cnt in 1: length(extra_var)){
 sel <- grep(extra_var[cnt], map_data[,2])
@@ -120,7 +120,7 @@ return(map_data)
 #'
 #' @param map_data		mapping table
 #' @inheritParams 		remove_extra_var
-#' @return 				edited mapping table		
+#' @return 				edited mapping table
 #' @author 		Sepideh
 #' @export
 
@@ -138,9 +138,9 @@ return(map_data)
 #' Upload clinical data from the db into transmart
 #'
 #'
-#' @param path				the db file path ("/PRECISESADS_WP8/P603.01_proj/data/db/.."), study type			
-#' @param study_type		"cross_sectional" or "inception"								
-#' 
+#' @param path				the db file path ("/PRECISESADS_WP8/P603.01_proj/data/db/.."), study type
+#' @param study_type		"cross_sectional" or "inception"
+#'
 #' @return 					df of all clinical data sorted by SUBJ_ID and VISIT, study_id, mapping table
 #'
 #' @author Sepideh

@@ -2,6 +2,7 @@ library(devtools)
 document('TransmartUploader')
 check_man('TransmartUploader')
 
+# Sys.setenv(TRANSMART_DB = 'pyro@5432')
 
 test('TransmartUploader', 'etl_internals')
 test('TransmartUploader', 'fam')

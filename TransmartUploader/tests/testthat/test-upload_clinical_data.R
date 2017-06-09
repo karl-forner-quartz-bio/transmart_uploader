@@ -1,5 +1,43 @@
 context('uploading clinical data')
 
+
+# run on "Test Studies/Low Dimentional Serial Data Test"
+.upload_clinical_data_merge <- function() {
+  db <- requires_db()
+
+  setup_temp_dir()
+
+  df <- head(iris)
+  etl_path <- file.path(STUDIES, 'iris')
+
+  df$SUBJ_ID <- paste0('ID', 1:nrow(df))
+  df <- format_input_data(df, study_id = 'iris', tissue_type = 'blood')
+
+  # delete left-over if any
+  delete_study_by_path(etl_path, host = db$host, port = db$port)
+
+  res <- upload_clinical_data(df, etl_path, 'Subjects+Demographics',
+    host = db$host, port = db$port)
+
+  ### now test the UPDATE_VARIABLE mode
+  df2 <- df[, 1:3]
+  # change existing variable
+  df2$Species <- LETTERS[1:nrow(df2)]
+#  # add variable
+  df2$toto <- 1:nrow(df2)
+  res <- upload_clinical_data(df2, etl_path, 'Subjects+Demographics',
+    merge = 'UPDATE_VARIABLES',
+    host = db$host, port = db$port)
+
+  expect_match(res$output, 'MSG Procedure completed successfully', all = FALSE)
+  expect_equal(unique(res$stats$N), nrow(df))
+
+  delete_study_by_path(etl_path, host = db$host, port = db$port)
+}
+test_that('upload_clinical_data_merge', .upload_clinical_data_merge())
+
+
+
 .upload_ACGHTEST_CLINICAL <- function() {
   db <- requires_db()
   # N.B: upload_tMDataLoader_sample directly uses execute_etl_cmd
@@ -34,17 +72,17 @@ context('uploading clinical data')
 
   expect_equal(unique(res$stats$N + res$stats$null), nrow(df))
 
-  ### now upload directly via existing ample files
-  study_id <- 'ACGHTEST'
-  etl_path <- file.path(STUDIES, study_id)
-
-  delete_study_by_path(STUDIES, host = db$host, port = db$port)
-
-  res <- upload_tMDataLoader_sample(sample_dir, etl_path, study_id,
-    host = db$host, port = db$port)
-
-  expect_match(res, 'MSG Procedure completed successfully', all = FALSE)
-
+ ### this part was useful for manual comparison between the two
+#  ### now upload directly via existing sample files
+#  study_id <- 'ACGHTEST'
+#  etl_path <- file.path(STUDIES, study_id)
+#
+#  delete_study_by_path(STUDIES, host = db$host, port = db$port)
+#
+#  res <- upload_tMDataLoader_sample(sample_dir, etl_path, study_id,
+#    host = db$host, port = db$port)
+#
+#  expect_match(res, 'MSG Procedure completed successfully', all = FALSE)
 
 
   delete_study_by_path(STUDIES, host = db$host, port = db$port)
@@ -64,11 +102,11 @@ test_that('upload_ACGHTEST_CLINICAL', .upload_ACGHTEST_CLINICAL())
 
   df$SUBJ_ID <- paste0('ID', 1:nrow(df))
   df <- format_input_data(df, study_id = 'iris', tissue_type = 'blood')
-  categ <- add_categories(names(df), 'Subjects+Demographics')
 
+  # delete left-over if any
   delete_study_by_path(etl_path, host = db$host, port = db$port)
 
-  res <- upload_clinical_data(df, etl_path, categ = categ, dir = '.',
+  res <- upload_clinical_data(df, etl_path, 'Subjects+Demographics',
     host = db$host, port = db$port)
 
   expect_match(res$output, 'MSG Procedure completed successfully', all = FALSE)

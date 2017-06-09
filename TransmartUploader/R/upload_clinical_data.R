@@ -1,6 +1,8 @@
 
 #' upload clinical data (no high dimensional data) using tMDataLoader
 #'
+#' @inheritParams simple_categorization
+#' @inheritParams build_mapping_file
 #' @param tissue_type		tissue_type of data
 #' @param transmart_path	the path in etl tree, as a standard path string
 #' @param ...				additional arguments to \code{execute_etl_cmd}
@@ -12,8 +14,10 @@
 upload_clinical_data <- function(
   df,
   etl_path,
-  mapping = build_mapping_file(df, categ),
-  categ = base_categorization(),
+  default_category = NULL,
+  mapping = build_mapping_file(df, categ, merge = merge),
+  categ = simple_categorization(df, default_category),
+  merge = 'REPLACE',
   ...
 ) {
 

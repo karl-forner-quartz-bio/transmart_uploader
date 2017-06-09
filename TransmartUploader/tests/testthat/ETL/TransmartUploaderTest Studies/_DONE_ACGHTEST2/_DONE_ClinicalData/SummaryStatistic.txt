@@ -1,2 +1,0 @@
-File	Variable	Variable Type	N	null	Mean	Median	IQR	Min	Max	SD	Count	Required	Validation rule	QC missing data	QC data range
-data.txt	SUBJ_ID	ID	80	0								Yes		OK	

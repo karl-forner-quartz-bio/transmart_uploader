@@ -113,7 +113,7 @@ add_categories <- function(vars, categories, base = base_categorization()) {
 #' @author karl
 #' @keywords internal
 build_mapping_file <- function(df, categ, filename = 'data.txt',
-  merge = c('REPLACE', 'UPDATE', 'UPDATE_VARIABLE', 'APPEND'))
+  merge = c('REPLACE', 'UPDATE', 'UPDATE_VARIABLES', 'APPEND'))
 {
   merge <- match.arg(merge)
 

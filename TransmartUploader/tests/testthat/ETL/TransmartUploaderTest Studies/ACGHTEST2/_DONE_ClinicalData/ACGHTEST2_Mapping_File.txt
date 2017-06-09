@@ -1,4 +1,0 @@
-filename	category_cd	col_nbr	data_label
-data.txt	 	1	STUDY_ID
-data.txt	 	2	SUBJ_ID
-data.txt	Subjects+Demographics	7	Age
