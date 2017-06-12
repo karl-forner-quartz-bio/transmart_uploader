@@ -3,7 +3,7 @@
 #' run the tMDataLoader tool
 #'
 #' Will reformat the data and generate automatically the Mapping file using
-#' the supplied mapper map_df
+#' the supplied map_df
 #'
 #' @inheritParams params
 #' @inheritParams run_tm_etl_on_processed_data

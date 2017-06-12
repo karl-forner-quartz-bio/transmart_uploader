@@ -18,7 +18,7 @@ the upload output log and summary statistics as a list
 }
 \description{
 Will reformat the data and generate automatically the Mapping file using
-the supplied mapper map_df
+the supplied map_df
 }
 \author{
 karl
