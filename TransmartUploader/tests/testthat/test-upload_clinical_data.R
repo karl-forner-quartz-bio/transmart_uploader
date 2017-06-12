@@ -1,6 +1,35 @@
 context('uploading clinical data')
 
 
+.bulk_upload_clinical_data <- function() {
+  db <- requires_db()
+  setup_temp_dir()
+
+  res <- fetch_test4_sample_data()
+  df <- res[[2]]
+  # adding SUBJ_ID and VISIT_NAME
+
+  df$STUDY_ID <- NULL
+  df2 <- df
+  df2$Serum2 <- df2$Serum
+  df2$`Cell Type` <- NULL
+  df$SAMPLE_ID <- NULL
+  df2$`Serum CRP Level, mg/dl` <- NULL
+  df$toto <- 'toto'
+
+  res <- bulk_upload_clinical_data(list(df1 = df, df2 = df2), study_id = 'TEST_BULK',
+    categories = c('Clinical+DF1', 'Clinical+Labs+DF2'),
+    etl_path = file.path(STUDIES, 'bulk_test'),
+    keep = list(df2 = 'Blood'),
+     host = db$host, port = db$port)
+
+   expect_match(res$output, 'MSG Procedure completed successfully', all = FALSE)
+
+  delete_study_by_id('TEST_BULK', host = db$host, port = db$port)
+}
+test_that('bulk_upload_clinical_data', .bulk_upload_clinical_data())
+
+
 # run on "Test Studies/Low Dimentional Serial Data Test"
 .upload_clinical_data_merge <- function() {
   db <- requires_db()
