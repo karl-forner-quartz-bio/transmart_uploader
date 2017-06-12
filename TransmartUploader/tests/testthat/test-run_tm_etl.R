@@ -5,8 +5,6 @@ context('run_tm_etl')
   run_tm_etl_on_processed_data <- TransmartUploader:::run_tm_etl_on_processed_data
   db <- requires_db()
 
-  browser()
-
   etl_root <- STUDIES
   etl_path <-  file.path(etl_root, "Toto/ClinicalDataToUpload")
 
@@ -15,6 +13,7 @@ context('run_tm_etl')
   df <- data.frame(
     STUDY_ID = 'toto',
     SUBJ_ID = 1:5,
+    VISIT_NAME = 'M0',
     VAR = LETTERS[1:5],
     stringsAsFactors = FALSE
     )
@@ -29,7 +28,6 @@ context('run_tm_etl')
     host = db$host, port= db$port)
 
   expect_match(res$output, 'MSG Procedure completed successfully', all = FALSE)
-
 
   ### with duplicated line
   df2 <- rbind(df[1,], df)
