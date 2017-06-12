@@ -32,4 +32,5 @@ dev.pdf: roxygen
 	rm -f $@
 	R CMD Rd2pdf -o $@ TransmartUploader
 	
-	
+coverage-html:
+	TRANSMART_DB=$(DB) Rscript -e 'library(covr); cov<-package_coverage("$(PKG)"); covr::report(cov, browse=T); cat("Press [0+enter] to after viewing the report:"); b <- scan("stdin", character(), n=1)'
