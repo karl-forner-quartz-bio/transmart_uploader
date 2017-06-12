@@ -89,10 +89,10 @@ test_that('simple_categorization', .simple_categorization())
     c('Subjects+Demographics', 'Type'),
     c('toto', 'Dataset'))
 
-  map <- build_mapping_file(df, categ2, 'toto.txt', merge = 'UPDATE_VARIABLE')
+  map <- build_mapping_file(df, categ2, 'toto.txt', merge = 'UPDATE_VARIABLES')
 
   expect_identical(names(df)[map$col_nbr], map$data_label)
-  expect_identical(attr(map, 'merge'), 'UPDATE_VARIABLE')
+  expect_identical(attr(map, 'merge'), 'UPDATE_VARIABLES')
 }
 test_that('build_mapping_file', .build_mapping_file())
 
