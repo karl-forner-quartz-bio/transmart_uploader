@@ -101,7 +101,7 @@ test_that('write_etl_files', .write_etl_files())
 
   expect_match(res, 'MSG Procedure completed successfully', all = FALSE)
 
-  delete_study_by_path(STUDIES, host = db$host, port = db$port)
+  delete_study_by_id(study_id,  host = db$host, port = db$port)
 }
 
 test_that('execute_etl_cmd', .execute_etl_cmd())
