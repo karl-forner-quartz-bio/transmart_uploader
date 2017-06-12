@@ -36,8 +36,9 @@ context('run_tm_etl')
   expect_match(res$output, 'MSG Procedure completed successfully', all = FALSE)
 
   expect_is(res$stats, 'data.frame')
+
   # -1 for STUDY_ID
-  expect_equal(nrow(res$stats), length(data_df) - 1)
+  expect_equal(nrow(res$stats), 2)
 }
 test_that('duplicates', .duplicates())
 
