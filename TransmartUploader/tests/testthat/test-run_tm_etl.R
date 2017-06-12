@@ -37,7 +37,6 @@ context('run_tm_etl')
 
   expect_is(res$stats, 'data.frame')
 
-  # -1 for STUDY_ID
   expect_equal(nrow(res$stats), 2)
 }
 test_that('duplicates', .duplicates())
@@ -90,7 +89,8 @@ test_that('run_tm_etl_on_processed_data', .run_tm_etl_on_processed_data())
 
 ### tests not requiring the DB, coz nothing to do or error
 .run_tm_etl_no_study_id <- function() {
-  expect_error(run_tm_etl(iris, MAP_DF, etl_path = 'Toto/XToUpload'),
+  expect_error(run_tm_etl_on_processed_data(iris, MAP_DF,
+      etl_path = 'Toto/XToUpload'),
     "STUDY_ID is MANDATORY")
 }
 test_that('run_tm_etl_no_study_id', .run_tm_etl_no_study_id())
@@ -99,7 +99,9 @@ test_that('run_tm_etl_no_study_id', .run_tm_etl_no_study_id())
 
 # if the etl_path does not end with xxxToUpload nothing should happen
 .run_tm_etl_bad_dir <- function() {
-  res <- run_tm_etl(DATA_DFS, MAP_DF, etl_path = 'Toto/This is a Test')
+  res <- run_tm_etl_on_processed_data(DATA_DFS, MAP_DF,
+    etl_path = 'Toto/This is a Test')
+
   expect_match(tail(res$output, 1), 'COMPLETED')
   expect_null(res$stats)
 }
