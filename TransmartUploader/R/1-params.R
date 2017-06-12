@@ -12,4 +12,5 @@
 #' @param port				the transmart DB port
 #'
 #' @name params
+#' @keywords internal
 NULL
