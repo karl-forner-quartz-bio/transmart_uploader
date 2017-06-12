@@ -26,7 +26,7 @@ upload_tMDataLoader_sample <- function(sample_dir, etl_path, study_id, ...) {
   dir.create(etl_test, recursive = TRUE)
   file.copy(file.path(test_dir, sample_dir), etl_test, recursive = TRUE)
 
-  TransmartUploader:::create_etl_config('Config.groovy', data_dir = 'ETL', ...)
+  create_etl_config('Config.groovy', data_dir = 'ETL', ...)
 
   execute_etl_cmd('Config.groovy')
 }
