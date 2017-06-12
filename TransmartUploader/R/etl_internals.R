@@ -53,16 +53,14 @@ execute_etl_cmd <- function(
  {
   check_jar(java, jar)
 
-  # args <- sprintf('-jar %s -c %s -i -s %s', jar, config_file, extra)
-
   args <- sprintf('-jar %s -c %s -i -s %s', jar, config_file, extra)
   if (visit_name_first) args <- paste0(args, ' --visit-name-first')
 
   out <- system2(java, args, stdout = TRUE, stderr = TRUE)
   status <- attr(out, 'status')
   if (!is.null(status)) {
-    msg <- sprintf('There was a problem running "%s %s", status=%i', java, args,
-      status)
+    msg <- sprintf('There was a problem running tMDataLoader: "%s %s", status=%i',
+       java, args, status)
     msg <- paste0(msg, '\noutput: \n', paste0(out, collapse = '\n'))
     stop(msg)
   }

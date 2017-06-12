@@ -82,6 +82,12 @@ test_that('write_etl_files', .write_etl_files())
 
 .execute_etl_cmd <- function() {
   db <- requires_db()
+
+  ### edge cases
+  # warning sent by system2()
+  suppressWarnings(expect_error(TransmartUploader:::execute_etl_cmd(extra = 'tsointsoin'),
+    'problem running tMDataLoader'))
+
   # N.B: upload_tMDataLoader_sample directly uses execute_etl_cmd
   upload_tMDataLoader_sample <- TransmartUploader:::upload_tMDataLoader_sample
 
