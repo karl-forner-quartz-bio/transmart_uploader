@@ -17,7 +17,7 @@
 #' 		about uncategorized vars such as \code{STUDY_ID} and \code{SUBJ_ID}
 #' 		and common vars such as \code{tissue_type}, cf \code{\link{base_categorization}}}
 #'
-#' 	\item{ applying a categorization to a data frame } { cf \code{\link{build_mapping_file}} }
+#' 	\item{ applying a categorization to a data frame }{ cf \code{\link{build_mapping_file}} }
 #'
 #'
 #' }
