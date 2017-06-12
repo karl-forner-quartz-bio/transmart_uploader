@@ -6,7 +6,7 @@
 #' - reorder columns so that STUDY_ID and SUBJ_ID are first
 #'
 #' @param study_id		the study_id to set or replace if not null
-#' @pram tissue_type	the Tissue_Type to set or replace if not null
+#' @param tissue_type	the Tissue_Type to set or replace if not null
 #' @inheritParams params
 #'
 #' @return the formatted data frame
