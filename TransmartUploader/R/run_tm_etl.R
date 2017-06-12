@@ -64,7 +64,7 @@ run_tm_etl_on_processed_data <- function(
     dir.create(dir)
     on.exit(unlink(dir, recursive = TRUE), add = TRUE)
   } else {
-    if (!file.exists(dir)) stop('Error, dir does not exit: ', dir)
+    if (!file.exists(dir)) stop('Error, dir does not exist: ', dir)
   }
 
   old <- setwd(dir)

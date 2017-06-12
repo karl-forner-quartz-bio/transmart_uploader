@@ -47,8 +47,6 @@ test_that('duplicates', .duplicates())
 # run on "Test Studies/Low Dimentional Serial Data Test"
 .run_tm_etl_on_processed_data <- function() {
   run_tm_etl_on_processed_data <- TransmartUploader:::run_tm_etl_on_processed_data
-
-
   db <- requires_db()
 
   test_dir <- fetch_tMDataLoader_samples()
@@ -68,6 +66,14 @@ test_that('duplicates', .duplicates())
   etl_path <-  file.path(etl_root, "Low Dim/ClinicalDataToUpload")
 
   delete_study_by_path(etl_root, host = db$host, port= db$port)
+
+  expect_error(run_tm_etl_on_processed_data(data_df, map_df, etl_path = etl_path,
+    host = db$host, port= db$port, dir = 'toto'), 'dir does not exist')
+
+  data_df_bad <- data_df
+  data_df_bad$STUDY_ID <- NULL
+  expect_error(run_tm_etl_on_processed_data(data_df_bad, map_df, etl_path = etl_path,
+    host = db$host, port= db$port), 'STUDY_ID is MANDATORY')
 
   res <- run_tm_etl_on_processed_data(data_df, map_df, etl_path = etl_path,
     host = db$host, port= db$port, dir = '.')

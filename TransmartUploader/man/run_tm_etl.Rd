@@ -9,8 +9,6 @@ run_tm_etl(data_dfs, map_df, etl_path, ...)
 \arguments{
 \item{data_dfs}{the data to upload as a (list of) data frame(s)}
 
-\item{map_df}{the mapper to generate the mapping file if needed}
-
 \item{etl_path}{the path in etl tree, as a standard path string}
 
 \item{...}{additional arguments to \code{run_etl_command}}
