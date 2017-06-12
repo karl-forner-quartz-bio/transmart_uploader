@@ -52,12 +52,4 @@ fetch_test4_sample_data <- function() {
 }
 
 
-#' fetch the fam test file
-#'
-#' @return a file path
-#'
-#' @author karl
-#' @export
-fetch_ref_fam <- function() { find_extdata_file('sample_data/fam/ref.fam') }
-
 

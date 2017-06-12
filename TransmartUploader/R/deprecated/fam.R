@@ -16,6 +16,16 @@ upload_fam <- function(path, transmart_path, study_id, ...) {
   upload_clinical_data(fam, study_id, transmart_path = transmart_path, ...)
 }
 
+#' fetch the fam test file
+#'
+#' @return a file path
+#'
+#' @author karl
+#' @export
+fetch_ref_fam <- function() { find_extdata_file('sample_data/fam/ref.fam') }
+
+
+
 
 #' read a FAM file
 #'
