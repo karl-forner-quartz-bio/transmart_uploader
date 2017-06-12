@@ -21,8 +21,8 @@ tests-on-local-db: set-local-db tests
 roxygen:
 	 $(RSCRIPT) -e 'library(methods);devtools::document("$(PKG)")'
 
-check-doc: roxygen
-	$(RSCRIPT) -e 'devtools::document("$(PKG)");devtools::check_doc("$(PKG)")'
+check-man: roxygen
+	$(RSCRIPT) -e 'devtools::document("$(PKG)");devtools::check_man("$(PKG)")'
 	 
 doc: roxygen
 	rm -f Rd2.pdf TransmartUploader.pdf
