@@ -10,8 +10,8 @@
 #'		\item{ categorization }{ a concept used by TransmartUploader, it is
 #' 			an association of variable names to a category code in the Transmart tree,
 #'  		as a data frame with 2 columns.
-#' 			It is the core part of a \em{Mapping File}, meant for humans, that
-#' 			will eventually be used to generate the final \em{Mapping File}. }
+#' 			It is the core part of a \code{Mapping File}, meant for humans, that
+#' 			will eventually be used to generate the final \code{Mapping File}. }
 #'
 #' 	\item{ base categorization }{ rather mininimal and standard categorization
 #' 		about uncategorized vars such as \code{STUDY_ID} and \code{SUBJ_ID}
@@ -59,10 +59,9 @@ base_categorization <- function() {
 #'
 #' @inheritParams mapping
 #' @param default_category	a default category to apply to \code{vars} if not null
-#' @params vars							the vars on which to apply the default category
+#' @param vars							the vars on which to apply the default category
 #' @return a data.frame with columns "category_cd" and "data_label"
 #'
-
 #' @seealso mapping
 #' @author karl
 #' @export
