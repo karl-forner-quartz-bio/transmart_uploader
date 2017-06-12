@@ -52,26 +52,6 @@ bulk_upload_clinical_data <- function(
   upload_clinical_data(df, etl_path, categ = categ, ...)
 }
 
-
-
-# NB: repeated columns are
-merge_data_dfs <- function(data_dfs, by, suffixes = names(data_dfs)) {
-  suffixes <- paste0('..', suffixes)
-
-  # trick: make a list of length-1 named lists
-  .add_suffix <- function(df, nm) { attr(df, 'suffix') <- nm; df }
-  tbls <- mapply(.add_suffix, data_dfs, suffixes, SIMPLIFY = FALSE)
-
-  .merge <- function(x, y) {
-    z <- merge(x, y, by = by, all = TRUE,
-      suffixes = c(attr(x, 'suffix'), attr(y, 'suffix')))
-    attr(z, 'suffix') <- attr(y, 'suffix') # N.B: this is arbitrary
-    z
-  }
-  df <- Reduce(.merge, tbls)
-}
-
-
 #' categorization of multiple tables
 #'
 #' @inheritParams mapping
