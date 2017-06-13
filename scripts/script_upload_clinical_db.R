@@ -41,7 +41,7 @@ PRETTY_TABLE_NAMES <- list(cmrbdt = "Comorbidity", concmed = "Medication",
 ### extract named list of tables
 tbls <- read_tables_for_cohort(DB, COHORT)
 names(tbls) <- sub('^.+_', '', names(tbls)) # remove prefix
-s
+
 ### remove some tables
 tbls <- tbls[setdiff(names(tbls), TABLES_TO_REMOVE)]
 
@@ -50,17 +50,6 @@ tbls <- sapply(tbls, fix_date_column_names, simplify = FALSE)
 
 ### rename VISIT to VISIT_NAME
 tbls <- sapply(tbls, fix_visit_name, simplify = FALSE)
-
-
-load_all('TransmartUploader')
-categories <- paste0('Clinical+', as.character(PRETTY_TABLE_NAMES[names(tbls)]))
-system.time(res <- bulk_upload_clinical_data(tbls, 'AD2', 'Inception/Low Dimensional Data',
-  categories = categories,
-  keep = list(sampling = SAMPLING_VARS_TO_KEEP), host = DBHOST))
-#    user  system elapsed
-#  21.784   1.318 135.553
-
-
 
 
 ### fetch list of duplicated columns across tables
@@ -79,63 +68,29 @@ tbls$sampling[SAMPLING_VARS_TO_KEEP] <- sampling[SAMPLING_VARS_TO_KEEP]
 ### prettify table names
 names(tbls) <- as.character(PRETTY_TABLE_NAMES[names(tbls)])
 
-names(tbls) <- paste0('Clinical+', names(tbls))
+# add the study_id
+for (i in seq_along(tbls)) tbls[[i]]$STUDY_ID <- STUDY_ID
 
-categories <- paste0('Clinical+', as.character(PRETTY_TABLE_NAMES[names(tbls)]))
-
-load_all('TransmartUploader')
-res <- bulk_upload_clinical_data(tbls, 'Inception/Low Dimensional Data')
-
+categories <- paste0('Clinical+', names(tbls))
 categ <- TransmartUploader:::multi_categorization(tbls, categories)
 
-# trick to keep some columns
-vars <- names(tbls$sampling)
-ind <- match(SAMPLING_VARS_TO_KEEP, vars)
-vars[ind] <- paste0(vars[ind], '.KEEP')
-names(tbls$sampling) <- vars
 
-df <- TransmartUploader:::merge_data_dfs(tbls, by = c('SUBJ_ID', 'VISIT_NAME'))
-
-
-categs <- mapply(simple_categorization, tbls, paste0('Clinical+', names(tbls)),
- SIMPLIFY = FALSE)
-categ <- do.call(rbind.data.frame, categs)
-row.names(categ) <- NULL
-
-
-delete_study_by_path('Inception', host = HOST)
-for (i in seq_along(tbls)) {
-  tbl <- tbls[[i]]
-  tbl <- format_input_data(tbl, STUDY_ID)
-  tblname <- names(tbls)[i]
-  message('uploading ', tblname)
-  res <- upload_clinical_data(tbl, 'Inception/Low Dimensional Data',
-      paste0('Clinical+', tblname),
-       host = HOST, merge = 'APPEND')
-}
-
-
-### debug
-med <- tbls[[2]]
-med <- format_input_data(med, STUDY_ID)
-res2 <- upload_clinical_data(med, 'Inception/Low Dimensional Data',
-  paste0('Clinical+', 'Medication'),
-  host = HOST, merge = 'APPEND')
-
-#### try to upload the list
-
-mytbls <- tbls[1:2]
 
 .mapit <- function(tbl, fname) { build_mapping_file(tbl, categ, fname) }
-mappings <- mapply(.mapit, mytbls, paste0(names(mytbls), '.txt'), SIMPLIFY = FALSE)
+mappings <- mapply(.mapit, tbls, paste0(names(tbls), '.txt'), SIMPLIFY = FALSE)
 mapping <- do.call(rbind, mappings)
 
 
-
-res <- upload_clinical_data(mytbls, 'Inception/Low Dimensional Data', mapping = mapping,
+system.time(
+res <- upload_clinical_data(tbls, 'Inception/Low Dimensional Data', mapping = mapping,
   host = HOST, merge = 'UPDATE_VARIABLES')
+)
+#    user  system elapsed
+#  19.592   1.328 117.627
 
 
+
+##############################################################
 
 # read all tables rfron a given cohort (CS/IC)
 # output a named list of data frames
