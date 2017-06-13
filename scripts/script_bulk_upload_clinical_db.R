@@ -10,6 +10,7 @@ load_all('TransmartUploader')
 
 DB <- 'db/db_clinical.db'
 HOST <- 'pyro'
+MERGE <- 'UPDATE_VARIABLES'
 COHORT <- 'inception'
 STUDY_ID <- 'AD2'
 TABLES_TO_REMOVE <- c('flag', 'mapping')
@@ -79,6 +80,6 @@ tt <- system.time(
   res <- bulk_upload_low_dimensional_data(tbls, STUDY_ID,
     etl_path = 'Inception/Low Dimensional Data',
     categories =  paste0('Clinical+', pretty_names),
-    keep = VARS_TO_KEEP, host = HOST)
+    keep = VARS_TO_KEEP, host = HOST, merge = MERGE)
 )
 print(tt)
