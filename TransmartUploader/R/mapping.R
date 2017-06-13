@@ -101,6 +101,33 @@ add_categories <- function(vars, categories, base = base_categorization()) {
 }
 
 
+#' categorization of multiple tables
+#'
+#' @inheritParams mapping
+#' @param default_category	a default category to apply to \code{vars} if not null
+#' @param vars							the vars on which to apply the default category
+#' @return a data.frame with columns "category_cd" and "data_label"
+#'
+#' @seealso mapping
+#' @author karl
+#' @keywords internal
+multi_categorization <- function(
+  data_dfs,
+  categories,
+  categ = base_categorization())
+{
+  base = base_categorization()
+  null_categ <- base[NULL, ]
+
+  categs <- mapply(simple_categorization, data_dfs, categories,
+    MoreArgs = list(categ = null_categ), SIMPLIFY = FALSE)
+  categ <- do.call(rbind.data.frame, categs)
+  row.names(categ) <- NULL
+
+  rbind(base, categ, stringsAsFactors = FALSE)
+}
+
+
 #' generate the mapping file for tMDataLoader as a data frame
 #'
 #' additional attributes such as the merge mode are stored as attributes

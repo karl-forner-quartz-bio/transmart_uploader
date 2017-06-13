@@ -68,31 +68,6 @@ bulk_upload_clinical_data <- function(
   upload_clinical_data(df, categ = categ, ...)
 }
 
-#' categorization of multiple tables
-#'
-#' @inheritParams mapping
-#' @param default_category	a default category to apply to \code{vars} if not null
-#' @param vars							the vars on which to apply the default category
-#' @return a data.frame with columns "category_cd" and "data_label"
-#'
-#' @seealso mapping
-#' @author karl
-#' @keywords internal
-multi_categorization <- function(
-  data_dfs,
-  categories,
-  categ = base_categorization())
-{
-  base = base_categorization()
-  null_categ <- base[NULL, ]
-
-  categs <- mapply(simple_categorization, data_dfs, categories,
-    MoreArgs = list(categ = null_categ), SIMPLIFY = FALSE)
-  categ <- do.call(rbind.data.frame, categs)
-  row.names(categ) <- NULL
-
-  rbind(base, categ, stringsAsFactors = FALSE)
-}
 
 
 #' upload clinical data (no high dimensional data) using tMDataLoader
