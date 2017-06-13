@@ -2,6 +2,7 @@
 
 #' shared params
 #'
+#'
 #' @param data_dir    the data directory to set
 #' @param host				the transmart DB host
 #' @param jar					the tMDataLoader jar file

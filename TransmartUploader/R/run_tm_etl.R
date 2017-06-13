@@ -4,13 +4,14 @@
 #' @param dir		directory in which to create the input files
 #' 	and to execute the ETL
 #' @inheritParams params
+#' @inheritParams mapping
 #' @param ...					additional arguments to \code{run_etl_command}
 #' @return the upload output log and summary statistics as a list
 #' @author karl
 #' @export
 run_tm_etl_on_processed_data <- function(
   data_dfs,
-  map_file_df,
+  mapping,
   etl_path,
   dir = NULL,
   data_dir = 'ETL',
@@ -37,7 +38,7 @@ run_tm_etl_on_processed_data <- function(
   if (is.null(study_id) || !nzchar(study_id)) {
     stop('STUDY_ID is MANDATORY')
   }
-  write_etl_files(data_dfs, map_file_df, data_dir, etl_path, study_id)
+  write_etl_files(data_dfs, mapping, data_dir, etl_path, study_id)
 
   ### config file
   config_file <- 'Config.groovy'

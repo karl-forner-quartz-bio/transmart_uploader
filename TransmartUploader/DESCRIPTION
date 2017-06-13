@@ -11,7 +11,9 @@ License: GPL-3
 LazyData: true
 Imports:
     brew,
-    car
+    car,
+    stats,
+    utils
 Suggests:
     devtools,
     testthat

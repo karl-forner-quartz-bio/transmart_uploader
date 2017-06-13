@@ -5,6 +5,7 @@
 #' - check that SUBJ_ID is present, or die
 #' - reorder columns so that STUDY_ID and SUBJ_ID are first
 #'
+#' @param df					a data frame to format before uploading to Transmart
 #' @param study_id		the study_id to set or replace if not null
 #' @param tissue_type	the Tissue_Type to set or replace if not null
 #' @inheritParams params

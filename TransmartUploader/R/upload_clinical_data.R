@@ -1,16 +1,32 @@
 #' bulk upload clinical data tables
 #'
-#' fast upload of multiple tables/data frame
+#' upload a named list of data frames in one shot:
+#' \itemize{
+#' 		\item all data frames must have mandatory vars SUBJ_ID and VISIT_NAME
+#' 		\item only unique variables beween data frames are kept, except for the
+#' 				mandatory vars, and the vars to \code{keep}
+#' 		\item vars are categorized by data frame, i.e.  vars from a data frame
+#' 					are all put in the same category
+#' 		\item	using the \code{keep} param, you can keep some vars to be uploaded
+#' 					by deciding in which data frame the keep them
+#' 		\item eventually all data are merged in one single data frame, which is
+#' 				then uploaded, which speeds up the process
+#' }
 #'
-#' will remove duplicate columns/vars
 #'
-#' @inheritParams simple_categorization
-#' @inheritParams build_mapping_file
-#' @param tissue_type		tissue_type of data
-#' @param transmart_path	the path in etl tree, as a standard path string
-#' @param ...				additional arguments to \code{execute_etl_cmd}
+#' @param	data_dfs		a named list of data frames. The names are only used
+#' 	as default for \var{categories} and for the \var{keep} param.
+#' @param study_id		the study ID
+#' @param categories	the transmart category to use for each data frame, as a
+#' 	character vector of same length than \var{data_dfs}
+#' @param keep				a named list of character vectors (using data_dfs names)
+#' 		specifying for some data frames which variables to keep, in case they
+#' 		are non-unique. So if you have a variable present in several data frames
+#' 		you can specify which data frame should keep it, and hence in which category
+#' 		it should end up.
+#' @param ...				additional arguments to \code{\link{upload_clinical_data}}
 #'
-#' @return the \code{\link{run_tm_etl_on_processed_data}} output
+#' @return the \code{\link{upload_clinical_data}} output
 #'
 #' @author karl
 #' @export
@@ -49,7 +65,7 @@ bulk_upload_clinical_data <- function(
 
   categ <- multi_categorization(tbls, categories)
 
-  upload_clinical_data(df, etl_path, categ = categ, ...)
+  upload_clinical_data(df, categ = categ, ...)
 }
 
 #' categorization of multiple tables
@@ -82,9 +98,8 @@ multi_categorization <- function(
 #' upload clinical data (no high dimensional data) using tMDataLoader
 #'
 #' @inheritParams simple_categorization
-#' @inheritParams build_mapping_file
-#' @param tissue_type		tissue_type of data
-#' @param transmart_path	the path in etl tree, as a standard path string
+#' @inheritParams mapping
+#' @inheritParams params
 #' @param ...				additional arguments to \code{execute_etl_cmd}
 #'
 #' @return the \code{\link{run_tm_etl_on_processed_data}} output
