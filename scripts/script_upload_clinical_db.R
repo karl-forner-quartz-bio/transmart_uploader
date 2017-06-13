@@ -82,7 +82,7 @@ mapping <- do.call(rbind, mappings)
 
 
 system.time(
-res <- upload_clinical_data(tbls, 'Inception/Low Dimensional Data', mapping = mapping,
+res <- upload_low_dimensional_data(tbls, 'Inception/Low Dimensional Data', mapping = mapping,
   host = HOST, merge = 'UPDATE_VARIABLES')
 )
 #    user  system elapsed

@@ -9,7 +9,7 @@
 #'
 #' The main functions are:
 #'\itemize{
-#'   \item{\code{\link{bulk_upload_clinical_data}}}
+#'   \item{\code{\link{bulk_upload_low_dimensional_data}}}
 #'   \item{\code{\link{run_tm_etl_on_processed_data}}}
 #'   \item{\code{\link{delete_study_by_id}}}
 #'   \item{\code{\link{delete_study_by_path}}}

@@ -20,7 +20,7 @@ fam[50:70, 6] <- 2
 fam[101:110, 5] <- 0
 fma_df <- format_fam(fam)
 etl_path <- 'Karl/Test_Upload_Fam'
-res <- upload_clinical_data(fma_df, transmart_path= etl_path, study_id = "ref2",
+res <- upload_low_dimensional_data(fma_df, transmart_path= etl_path, study_id = "ref2",
   tissue_type = "Blood")
 # delete_study_by_id('ref2')
 
@@ -35,6 +35,6 @@ dfs <- lapply(dfs, format_fam)
 
 
 etl_path <- 'Sep/Test_Upload_Fam'
-res<- upload_clinical_data(dfs, transmart_path= etl_path, study_id = "TEST_Fam_1", tissue_type = "Blood")
+res<- upload_low_dimensional_data(dfs, transmart_path= etl_path, study_id = "TEST_Fam_1", tissue_type = "Blood")
 
 

@@ -24,13 +24,13 @@
 #' 		are non-unique. So if you have a variable present in several data frames
 #' 		you can specify which data frame should keep it, and hence in which category
 #' 		it should end up.
-#' @param ...				additional arguments to \code{\link{upload_clinical_data}}
+#' @param ...				additional arguments to \code{\link{upload_low_dimensional_data}}
 #'
-#' @return the \code{\link{upload_clinical_data}} output
+#' @return the \code{\link{upload_low_dimensional_data}} output
 #'
 #' @author karl
 #' @export
-bulk_upload_clinical_data <- function(
+bulk_upload_low_dimensional_data <- function(
   data_dfs,
   study_id,
   categories = names(data_dfs),
@@ -65,7 +65,7 @@ bulk_upload_clinical_data <- function(
 
   categ <- multi_categorization(tbls, categories)
 
-  upload_clinical_data(df, categ = categ, ...)
+  upload_low_dimensional_data(df, categ = categ, ...)
 }
 
 
@@ -81,7 +81,7 @@ bulk_upload_clinical_data <- function(
 #'
 #' @author karl
 #' @export
-upload_clinical_data <- function(
+upload_low_dimensional_data <- function(
   df,
   etl_path,
   default_category = NULL,

@@ -1,7 +1,7 @@
-context('uploading clinical data')
+context('uploading Low Dimensional data')
 
 
-.bulk_upload_clinical_data <- function() {
+.bulk_upload_low_dimensional_data <- function() {
   db <- requires_db()
   setup_temp_dir()
 
@@ -17,7 +17,7 @@ context('uploading clinical data')
   df2$`Serum CRP Level, mg/dl` <- NULL
   df$toto <- 'toto'
 
-  res <- bulk_upload_clinical_data(list(df1 = df, df2 = df2), study_id = 'TEST_BULK',
+  res <- bulk_upload_low_dimensional_data(list(df1 = df, df2 = df2), study_id = 'TEST_BULK',
     categories = c('Clinical+DF1', 'Clinical+Labs+DF2'),
     etl_path = file.path(STUDIES, 'bulk_test'),
     keep = list(df2 = 'Blood'),
@@ -27,11 +27,11 @@ context('uploading clinical data')
 
   delete_study_by_id('TEST_BULK', host = db$host, port = db$port)
 }
-test_that('bulk_upload_clinical_data', .bulk_upload_clinical_data())
+test_that('bulk_upload_low_dimensional_data', .bulk_upload_low_dimensional_data())
 
 
 # run on "Test Studies/Low Dimentional Serial Data Test"
-.upload_clinical_data_merge <- function() {
+.upload_low_dimensional_data_merge <- function() {
   db <- requires_db()
 
   setup_temp_dir()
@@ -45,7 +45,7 @@ test_that('bulk_upload_clinical_data', .bulk_upload_clinical_data())
   # delete left-over if any
   delete_study_by_path(etl_path, host = db$host, port = db$port)
 
-  res <- upload_clinical_data(df, etl_path, 'Subjects+Demographics',
+  res <- upload_low_dimensional_data(df, etl_path, 'Subjects+Demographics',
     host = db$host, port = db$port)
 
   ### now test the UPDATE_VARIABLE mode
@@ -54,7 +54,7 @@ test_that('bulk_upload_clinical_data', .bulk_upload_clinical_data())
   df2$Species <- LETTERS[1:nrow(df2)]
 #  # add variable
   df2$toto <- 1:nrow(df2)
-  res <- upload_clinical_data(df2, etl_path, 'Subjects+Demographics',
+  res <- upload_low_dimensional_data(df2, etl_path, 'Subjects+Demographics',
     merge = 'UPDATE_VARIABLES',
     host = db$host, port = db$port)
 
@@ -63,7 +63,7 @@ test_that('bulk_upload_clinical_data', .bulk_upload_clinical_data())
 
   delete_study_by_path(etl_path, host = db$host, port = db$port)
 }
-test_that('upload_clinical_data_merge', .upload_clinical_data_merge())
+test_that('upload_low_dimensional_data_merge', .upload_low_dimensional_data_merge())
 
 
 
@@ -73,7 +73,7 @@ test_that('upload_clinical_data_merge', .upload_clinical_data_merge())
 
 
 
-  ### now upload it via upload_clinical_data
+  ### now upload it via upload_low_dimensional_data
   path <- file.path(TransmartUploader:::fetch_acgh_cnv_clinical_sample(),
     'ClinicalData/ACGHTEST_Clinical_data.txt')
   df <- read.table(path, sep = "\t", header = TRUE, check.names = FALSE,
@@ -93,7 +93,7 @@ test_that('upload_clinical_data_merge', .upload_clinical_data_merge())
 
   categ <- add_categories(c("histological_type"), "Subjects+Medical_History", categ)
 
-  res <- upload_clinical_data(df, etl_path, categ = categ,
+  res <- upload_low_dimensional_data(df, etl_path, categ = categ,
     host = db$host, port = db$port)
   expect_match(res$output, 'MSG Procedure completed successfully', all = FALSE)
 
@@ -119,7 +119,7 @@ test_that('upload_ACGHTEST_CLINICAL', .upload_ACGHTEST_CLINICAL())
 
 
 # run on "Test Studies/Low Dimentional Serial Data Test"
-.upload_clinical_data <- function() {
+.upload_low_dimensional_data <- function() {
   db <- requires_db()
 
   setup_temp_dir()
@@ -133,7 +133,7 @@ test_that('upload_ACGHTEST_CLINICAL', .upload_ACGHTEST_CLINICAL())
   # delete left-over if any
   delete_study_by_path(etl_path, host = db$host, port = db$port)
 
-  res <- upload_clinical_data(df, etl_path, 'Subjects+Demographics',
+  res <- upload_low_dimensional_data(df, etl_path, 'Subjects+Demographics',
     host = db$host, port = db$port)
 
   expect_match(res$output, 'MSG Procedure completed successfully', all = FALSE)
@@ -141,7 +141,7 @@ test_that('upload_ACGHTEST_CLINICAL', .upload_ACGHTEST_CLINICAL())
 
   delete_study_by_path(etl_path, host = db$host, port = db$port)
 }
-test_that('upload_clinical_data', .upload_clinical_data())
+test_that('upload_low_dimensional_data', .upload_low_dimensional_data())
 
 
 

@@ -77,9 +77,9 @@ map_data <- map_data [-which(map_data[,2]=="VISIT_NAME"),]
 
 
 
-upload_clinical_data(df, study_id = study_id, transmart_path = 'Cross Sectional/Low Dimensional Data', mapping = map_data)
+upload_low_dimensional_data(df, study_id = study_id, transmart_path = 'Cross Sectional/Low Dimensional Data', mapping = map_data)
 
-upload_clinical_data(df, study_id = study_id, transmart_path = 'Inception/Low Dimensional Data', mapping = map_data)
+upload_low_dimensional_data(df, study_id = study_id, transmart_path = 'Inception/Low Dimensional Data', mapping = map_data)
 
 
 

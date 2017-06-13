@@ -4,7 +4,7 @@
 #' cf \url{http://pngu.mgh.harvard.edu/~purcell/plink2/formats.html#fam}
 #'
 #' @param path		the FAM file path
-#' @inheritParams upload_clinical_data
+#' @inheritParams upload_low_dimensional_data
 #' @return sample_data		the data.frame with 3 cols, fixed col names: "SUBJ_ID", "Sex", "Phenotype"
 #'
 #' @author karl
@@ -13,7 +13,7 @@
 upload_fam <- function(path, transmart_path, study_id, ...) {
   raw <- read_fam(path)
   fam <- format_fam(raw)
-  upload_clinical_data(fam, study_id, transmart_path = transmart_path, ...)
+  upload_low_dimensional_data(fam, study_id, transmart_path = transmart_path, ...)
 }
 
 #' fetch the fam test file
