@@ -69,15 +69,13 @@ test_that('upload_clinical_data_merge', .upload_clinical_data_merge())
 
 .upload_ACGHTEST_CLINICAL <- function() {
   db <- requires_db()
-  # N.B: upload_tMDataLoader_sample directly uses execute_etl_cmd
-  upload_tMDataLoader_sample <- TransmartUploader:::upload_tMDataLoader_sample
   add_categories <- TransmartUploader:::add_categories
 
-  sample_dir <- "Test Studies/Test aCGH Copy Number Variations/ClinicalDataToUpload"
+
 
   ### now upload it via upload_clinical_data
-  fname <- 'ACGHTEST_Clinical_data.txt'
-  path <- file.path(fetch_tMDataLoader_samples(), sample_dir, fname)
+  path <- file.path(TransmartUploader:::fetch_acgh_cnv_clinical_sample(),
+    'ClinicalData/ACGHTEST_Clinical_data.txt')
   df <- read.table(path, sep = "\t", header = TRUE, check.names = FALSE,
     stringsAsFactors = FALSE)
 

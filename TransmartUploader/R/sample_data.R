@@ -1,36 +1,30 @@
 
-#' fetch the tMDataLoader-samples
+#' fetch the tMDataLoader sample "Low Dimentional Serial Data Test"
 #'
-#' samples from \url{https://github.com/Clarivate-LSPS/tMDataLoader-samples}
+#' this sample from \url{https://github.com/Clarivate-LSPS/tMDataLoader-samples}
 #' have been integrated into this package for testing purposes
 #'
-#' It contains in particular a mispelled 'Low Dimentional Serial Data Test'
 #'
-#' @return the path of the directory containing the sample test studies
+#' @return the path of the directory containing the sample test study
 #'
 #' @author karl
-#' @export
-fetch_tMDataLoader_samples <- function() {
-  find_extdata_file('sample_data/tMDataLoader-samples')
-}
-
-#' upload atMDataLoader-sample
-#'
 #' @keywords internal
-upload_tMDataLoader_sample <- function(sample_dir, etl_path, study_id, ...) {
-  test_dir <- normalizePath(fetch_tMDataLoader_samples())
-
-  setup_temp_dir()
-
-  etl_test <- file.path('ETL', etl_path)
-  dir.create(etl_test, recursive = TRUE)
-  file.copy(file.path(test_dir, sample_dir), etl_test, recursive = TRUE)
-
-  create_etl_config('Config.groovy', data_dir = 'ETL', ...)
-
-  execute_etl_cmd('Config.groovy')
+fetch_lowdimserialdata_sample <- function() {
+  find_extdata_file('sample_data/lowdimserialdata')
 }
 
+
+#' fetch the tMDataLoader sample "Test\ aCGH\ Copy\ Number\ Variations" clinical data
+#'
+#' this sample from \url{https://github.com/Clarivate-LSPS/tMDataLoader-samples}
+#' have been integrated into this package for testing purposes
+#'
+#' @return the path of the directory containing the sample test study
+#' @author karl
+#' @keywords internal
+fetch_acgh_cnv_clinical_sample <- function() {
+  find_extdata_file('sample_data/acgh_cnv_clinical')
+}
 
 
 #' fetch the Test4 sample data

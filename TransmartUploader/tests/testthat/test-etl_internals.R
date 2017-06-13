@@ -89,10 +89,11 @@ test_that('write_etl_files', .write_etl_files())
     'problem running tMDataLoader'))
 
   # N.B: upload_tMDataLoader_sample directly uses execute_etl_cmd
-  upload_tMDataLoader_sample <- TransmartUploader:::upload_tMDataLoader_sample
 
-  etl_path <- STUDIES
-  sample_dir <- "Test Studies/Low Dimentional Serial Data Test"
+  etl_path <- file.path(STUDIES, 'lowdimserialdata')
+  sample_dir <- TransmartUploader:::fetch_lowdimserialdata_sample()
+  sample_dir <- file.path(sample_dir, 'ClinicalData')
+
   study_id <- 'LDDTest'
 
   delete_study_by_path(STUDIES, host = db$host, port = db$port)

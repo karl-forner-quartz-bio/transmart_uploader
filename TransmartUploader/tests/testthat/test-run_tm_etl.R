@@ -48,10 +48,9 @@ test_that('duplicates', .duplicates())
   run_tm_etl_on_processed_data <- TransmartUploader:::run_tm_etl_on_processed_data
   db <- requires_db()
 
-  test_dir <- fetch_tMDataLoader_samples()
+  path <- TransmartUploader:::fetch_lowdimserialdata_sample()
+  path <- file.path(path, 'ClinicalData')
   setup_temp_dir()
-  path <- file.path(test_dir,
-    "Test Studies/Low Dimentional Serial Data Test/ClinicalDataToUpload")
 
 
   # read test data

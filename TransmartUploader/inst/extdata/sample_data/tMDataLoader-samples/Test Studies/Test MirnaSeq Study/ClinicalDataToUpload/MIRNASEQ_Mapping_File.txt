@@ -1,4 +1,0 @@
-filename	category_cd	col_nbr	data_label
-ABCDData.txt		1	STUDY_ID
-ABCDData.txt		2	SUBJ_ID
-ABCDData.txt	Sample Type	3	

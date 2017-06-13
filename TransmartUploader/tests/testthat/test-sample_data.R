@@ -12,11 +12,18 @@ test_that('fetch_test4_sample_data', .fetch_test4_sample_data())
 
 
 
-.fetch_tMDataLoader_samples <- function() {
-  path <- fetch_tMDataLoader_samples()
+.fetch_lowdimserialdata_sample <- function() {
+  path <- TransmartUploader:::fetch_lowdimserialdata_sample()
   expect_true(dir.exists(path))
-
-  expect_true(dir.exists(
-      file.path(path, "Test Studies/Low Dimentional Serial Data Test")))
+  expect_true(dir.exists(file.path(path, 'ClinicalData')))
 }
-test_that('fetch_tMDataLoader_samples', .fetch_tMDataLoader_samples())
+test_that('fetch_lowdimserialdata_sample', .fetch_lowdimserialdata_sample())
+
+
+
+.fetch_acgh_cnv_clinical_sample <- function() {
+  path <- TransmartUploader:::fetch_acgh_cnv_clinical_sample()
+  expect_true(dir.exists(path))
+  expect_true(dir.exists(file.path(path, 'ClinicalData')))
+}
+test_that('fetch_acgh_cnv_clinical_sample', .fetch_acgh_cnv_clinical_sample())
