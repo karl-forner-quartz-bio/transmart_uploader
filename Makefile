@@ -5,8 +5,8 @@ DB=
 
 check:
 	[ -e .check ] || mkdir .check
-	$(R) CMD build TransmartUploader
-	$(R) CMD check TransmartUploader*.gz
+	cd .check && $(R) CMD build ../TransmartUploader
+	cd .check && $(R) CMD check TransmartUploader*.gz
 
 	
 tests: 
