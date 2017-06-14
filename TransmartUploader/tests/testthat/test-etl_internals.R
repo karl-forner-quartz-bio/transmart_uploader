@@ -67,7 +67,11 @@ test_that('write_etl_mapping_file', .write_etl_mapping_file())
 
   dfs <- lapply(DATA_DFS, TransmartUploader:::format_input_data)
   fns <- sprintf('prefix_%i.txt', seq_along(dfs))
-  map <- TransmartUploader:::generate_mapping(dfs, MAP_DF, fns)
+
+  maps <- mapply(TransmartUploader:::build_mapping_file, dfs, fns,
+    MoreArgs = list(categ = MAP_DF), SIMPLIFY = FALSE)
+  map  <- do.call(rbind, maps)
+
 
   TransmartUploader:::write_etl_files(dfs, map, 'ETL', 'toto/titi/tutu', 'prefix')
 
