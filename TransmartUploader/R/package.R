@@ -7,9 +7,12 @@
 #' The current version of **tMdataloader** is 1.2.4-116.
 #'
 #'
-#' The main functions are:
+#' The main functions are, from high level to lower level:
 #'\itemize{
-#'   \item{\code{\link{bulk_upload_low_dimensional_data}}}
+#'   \item{\code{\link{batch_upload_low_dimensional_data}}}
+#'   \item{\code{\link{multiple_upload_job}}}
+#'   \item{\code{\link{simple_upload_job}}}
+#'   \item{\code{\link{upload_low_dimensional_data}}}
 #'   \item{\code{\link{run_tm_etl_on_processed_data}}}
 #'   \item{\code{\link{delete_study_by_id}}}
 #'   \item{\code{\link{delete_study_by_path}}}
