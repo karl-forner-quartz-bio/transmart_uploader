@@ -136,7 +136,7 @@ multi_categorization <- function(
 #' @inheritParams mapping
 #' @return the mapping file as a data frame
 #' @author karl
-#' @keywords internal
+#' @export
 build_mapping_file <- function(df, categ, filename = 'data.txt',
   merge = c('REPLACE', 'UPDATE', 'UPDATE_VARIABLES', 'APPEND'))
 {
