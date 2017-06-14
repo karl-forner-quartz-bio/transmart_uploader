@@ -58,7 +58,7 @@ base_categorization <- function() {
 #' utility to make a categorization with a default category
 #'
 #' @inheritParams mapping
-#' @param default_category	a default category to apply to \code{vars} if not null
+#' @param category	a default category to apply to \code{vars} if not null
 #' @param vars							the vars on which to apply the default category
 #' @return a data.frame with columns "category_cd" and "data_label"
 #'
@@ -67,12 +67,12 @@ base_categorization <- function() {
 #' @export
 simple_categorization <- function(
   df,
-  default_category = NULL,
+  category = NULL,
   categ = base_categorization(),
   vars = setdiff(colnames(df), categ[[2]]))
 {
-  if (!is.null(default_category)) {
-    categ <- add_categories(vars, default_category, categ)
+  if (!is.null(category)) {
+    categ <- add_categories(vars, category, categ)
   }
 
   categ
@@ -104,7 +104,6 @@ add_categories <- function(vars, categories, base = base_categorization()) {
 #' categorization of multiple tables
 #'
 #' @inheritParams mapping
-#' @param default_category	a default category to apply to \code{vars} if not null
 #' @param vars							the vars on which to apply the default category
 #' @return a data.frame with columns "category_cd" and "data_label"
 #'
@@ -163,44 +162,3 @@ build_mapping_file <- function(df, categ, filename = 'data.txt',
 }
 
 
-#' generate the mapping file for tMDataLoader as a data frame
-#'
-#' N.B1: the data_dfs must be properly formatted
-#'
-#' N.B2: same order as data_dfs
-#'
-#' @inheritParams params
-#' @param mapper	the mapper to use for generating the mapping file
-#' @return the mapping as a data frame
-#' @author karl
-#' @keywords internal
-generate_mapping <- function(data_dfs, mapper, filenames) {
-  vars <- mapper$data_label
-  # 1. remove columns not in the mapper
-  for (i in 1:length(data_dfs)) {
-    cols <- intersect(names(data_dfs[[i]]), vars)
-    data_dfs[[i]] <- data_dfs[[i]][, cols, drop = FALSE]
-  }
-
-  # make a subset of the mapping file
-  cols <- unique(unlist(lapply(data_dfs, names), use.names = FALSE))
-  map <- mapper[mapper$data_label %in% cols, , drop = FALSE]
-
-  # now create the tMDataLoader mapping file with columns filename and col_nbr
-  .make_mapping <- function(i) {
-    df <- data_dfs[[i]]
-    mm <- data.frame(data_label = names(df), col_nbr = 1:ncol(df),
-      stringsAsFactors = FALSE)
-    res <- merge(mm, map, by = 'data_label')
-    res$filename <- filenames[i]
-    res <- res[, c('filename',	'category_cd', 	'col_nbr', 'data_label')]
-
-    # order by col_nbr
-    res[order(res$col_nbr), ]
-  }
-
-  res <- lapply(seq_along(data_dfs), .make_mapping)
-  res <- do.call(rbind, res)
-
-  res
-}
