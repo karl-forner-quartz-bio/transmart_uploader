@@ -3,7 +3,7 @@ document('TransmartUploader')
 check_man('TransmartUploader')
 
 # Sys.setenv(TRANSMART_DB = 'pyro@5432')
-
+test('TransmartUploader', 'batch')
 test('TransmartUploader', 'etl_internals')
 test('TransmartUploader', 'fam')
 test('TransmartUploader', 'input_data')
