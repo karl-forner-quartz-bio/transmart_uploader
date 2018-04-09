@@ -103,7 +103,9 @@ multiple_upload_job <- function(
 #' @export
 #' @seealso simple_upload_job
 #' @seealso multiple_upload_job
-batch_upload_low_dimensional_data <- function(jobs, merge = 'REPLACE',...) {
+batch_upload_low_dimensional_data <- function(jobs, merge = 'REPLACE',
+    annot_file = NULL, ...) {
+
 
   # mappings
   mappings <- lapply(jobs, getElement, 'mapping')
@@ -118,6 +120,15 @@ batch_upload_low_dimensional_data <- function(jobs, merge = 'REPLACE',...) {
   mapping <- do.call(rbind, mappings)
   rownames(mapping) <- NULL
   attr(mapping, 'merge') <- merge
+
+  # if annotations are provided, update data labels
+  if (!is.null(annot_file)) {
+    annot_df <- read.delim(annot_file, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
+    desc <- annot_df[match(mapping$data_label, annot_df$VARIABLE), 'DESCRIPTION']
+    mapping$data_label <- ifelse(
+      !mapping$data_label %in% c('STUDY_ID', 'SUBJ_ID', 'VISIT_NAME') & !is.na(desc),
+      desc, mapping$data_label)
+  }
 
   data_dfs <- lapply(jobs, getElement, 'data')
 
