@@ -126,8 +126,8 @@ batch_upload_low_dimensional_data <- function(jobs, merge = 'REPLACE',
     annot_df <- read.delim(annot_file, sep = '\t', header = TRUE, stringsAsFactors = FALSE)
     desc <- annot_df[match(mapping$data_label, annot_df$VARIABLE), 'DESCRIPTION']
     mapping$data_label <- ifelse(
-      !mapping$data_label %in% c('STUDY_ID', 'SUBJ_ID', 'VISIT_NAME') & !is.na(desc),
-      desc, mapping$data_label)
+      !mapping$data_label %in% c('STUDY_ID', 'SUBJ_ID', 'VISIT_NAME') &
+          !is.na(desc) & desc != '', desc, mapping$data_label)
   }
 
   data_dfs <- lapply(jobs, getElement, 'data')
